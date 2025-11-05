@@ -242,5 +242,17 @@
 
     <script src="app.js"></script>
     <script src="announcements.js"></script>
+    <script>
+        // Authentication check
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+        if (!currentUser.username) {
+            window.location.href = 'login.html';
+        }
+        // Check role access (admin and roommate can access announcements)
+        if (currentUser.role !== 'admin' && currentUser.role !== 'roommate') {
+            alert('⚠️ Access Denied: You do not have permission to view announcements');
+            window.location.href = currentUser.dashboard || 'login.html';
+        }
+    </script>
 </body>
 </html>

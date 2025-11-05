@@ -59,13 +59,13 @@
         </nav>
         <div class="sidebar-footer">
             <div class="user-info">
-                <div class="user-avatar">JD</div>
+                <div class="user-avatar">AK</div>
                 <div class="user-details">
-                    <div class="user-name">John Doe</div>
-                    <div class="user-role" id="currentRole">Admin</div>
+                    <div class="user-name" id="userName">Loading...</div>
+                    <div class="user-role admin-badge" id="currentRole">Admin</div>
                 </div>
             </div>
-            <button class="btn-icon" id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
+            <button class="btn-secondary btn-small" onclick="handleLogout()">Logout</button>
         </div>
     </aside>
 
@@ -87,25 +87,25 @@
             <div class="stat-card">
                 <div class="stat-icon" style="background: var(--primary-light);">👥</div>
                 <div class="stat-content">
-                    <div class="stat-label">Total Roommates</div>
-                    <div class="stat-value">4</div>
-                    <div class="stat-change">All active</div>
+                    <div class="stat-label">Total Members</div>
+                    <div class="stat-value">5</div>
+                    <div class="stat-change">All roles active</div>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" style="background: var(--success-light);">⭐</div>
                 <div class="stat-content">
-                    <div class="stat-label">Admins</div>
-                    <div class="stat-value">1</div>
-                    <div class="stat-change">Full access</div>
+                    <div class="stat-label">Residents</div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-change">Roommates active</div>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" style="background: var(--info-light);">📅</div>
                 <div class="stat-content">
-                    <div class="stat-label">Avg. Stay Duration</div>
-                    <div class="stat-value">8 mo</div>
-                    <div class="stat-change">Current residents</div>
+                    <div class="stat-label">Lease Duration</div>
+                    <div class="stat-value">12 mo</div>
+                    <div class="stat-change">Jan - Dec 2025</div>
                 </div>
             </div>
         </section>
@@ -117,25 +117,25 @@
             </div>
             <div class="card-body">
                 <div class="users-list">
-                    <!-- User 1 - Admin -->
+                    <!-- User 1 - Admin (Ahmed Khan) -->
                     <div class="user-card admin">
                         <div class="user-card-header">
-                            <div class="user-avatar large" style="background: var(--primary);">JD</div>
+                            <div class="user-avatar large" style="background: #0A6738;">AK</div>
                             <div class="user-main-info">
                                 <div class="user-name-row">
-                                    <h4>John Doe</h4>
-                                    <span class="role-badge admin">Admin</span>
+                                    <h4>Ahmed Khan</h4>
+                                    <span class="role-badge admin">House Admin</span>
                                 </div>
                                 <div class="user-contact">
-                                    <span>📧 john.doe@email.com</span>
-                                    <span>📱 (555) 123-4567</span>
+                                    <span>📧 ahmed.khan@email.com</span>
+                                    <span>📱 0300-1234567</span>
                                 </div>
                             </div>
                         </div>
                         <div class="user-details-grid">
                             <div class="user-detail">
                                 <div class="detail-label">Move-in Date</div>
-                                <div class="detail-value">March 15, 2024</div>
+                                <div class="detail-value">January 1, 2025</div>
                             </div>
                             <div class="user-detail">
                                 <div class="detail-label">Room</div>
@@ -143,11 +143,11 @@
                             </div>
                             <div class="user-detail">
                                 <div class="detail-label">Rent Share</div>
-                                <div class="detail-value">$300/month</div>
+                                <div class="detail-value">PKR 11,250/month</div>
                             </div>
                             <div class="user-detail">
                                 <div class="detail-label">Payment Status</div>
-                                <div class="detail-value status-warning">3 pending bills</div>
+                                <div class="detail-value status-success">All paid ✓</div>
                             </div>
                         </div>
                         <div class="user-actions">
@@ -156,25 +156,25 @@
                         </div>
                     </div>
 
-                    <!-- User 2 -->
+                    <!-- User 2 (Hassan Ali) -->
                     <div class="user-card">
                         <div class="user-card-header">
-                            <div class="user-avatar large" style="background: var(--success);">SM</div>
+                            <div class="user-avatar large" style="background: #3B82F6;">HA</div>
                             <div class="user-main-info">
                                 <div class="user-name-row">
-                                    <h4>Sarah Miller</h4>
+                                    <h4>Hassan Ali</h4>
                                     <span class="role-badge roommate">Roommate</span>
                                 </div>
                                 <div class="user-contact">
-                                    <span>📧 sarah.m@email.com</span>
-                                    <span>📱 (555) 234-5678</span>
+                                    <span>📧 hassan.ali@email.com</span>
+                                    <span>📱 0301-2345678</span>
                                 </div>
                             </div>
                         </div>
                         <div class="user-details-grid">
                             <div class="user-detail">
                                 <div class="detail-label">Move-in Date</div>
-                                <div class="detail-value">March 15, 2024</div>
+                                <div class="detail-value">January 1, 2025</div>
                             </div>
                             <div class="user-detail">
                                 <div class="detail-label">Room</div>
@@ -182,7 +182,7 @@
                             </div>
                             <div class="user-detail">
                                 <div class="detail-label">Rent Share</div>
-                                <div class="detail-value">$300/month</div>
+                                <div class="detail-value">PKR 11,250/month</div>
                             </div>
                             <div class="user-detail">
                                 <div class="detail-label">Payment Status</div>
@@ -196,25 +196,25 @@
                         </div>
                     </div>
 
-                    <!-- User 3 -->
+                    <!-- User 3 (Fatima Noor) -->
                     <div class="user-card">
                         <div class="user-card-header">
-                            <div class="user-avatar large" style="background: var(--warning);">MR</div>
+                            <div class="user-avatar large" style="background: #3B82F6;">FN</div>
                             <div class="user-main-info">
                                 <div class="user-name-row">
-                                    <h4>Mike Roberts</h4>
+                                    <h4>Fatima Noor</h4>
                                     <span class="role-badge roommate">Roommate</span>
                                 </div>
                                 <div class="user-contact">
-                                    <span>📧 mike.r@email.com</span>
-                                    <span>📱 (555) 345-6789</span>
+                                    <span>📧 fatima.noor@email.com</span>
+                                    <span>📱 0302-3456789</span>
                                 </div>
                             </div>
                         </div>
                         <div class="user-details-grid">
                             <div class="user-detail">
                                 <div class="detail-label">Move-in Date</div>
-                                <div class="detail-value">April 1, 2024</div>
+                                <div class="detail-value">January 1, 2025</div>
                             </div>
                             <div class="user-detail">
                                 <div class="detail-label">Room</div>
@@ -222,11 +222,11 @@
                             </div>
                             <div class="user-detail">
                                 <div class="detail-label">Rent Share</div>
-                                <div class="detail-value">$300/month</div>
+                                <div class="detail-value">PKR 11,250/month</div>
                             </div>
                             <div class="user-detail">
                                 <div class="detail-label">Payment Status</div>
-                                <div class="detail-value status-warning">1 pending bill</div>
+                                <div class="detail-value status-success">All paid ✓</div>
                             </div>
                         </div>
                         <div class="user-actions">
@@ -236,43 +236,81 @@
                         </div>
                     </div>
 
-                    <!-- User 4 -->
+                    <!-- User 4 (Malik Tariq - Landlord) -->
                     <div class="user-card">
                         <div class="user-card-header">
-                            <div class="user-avatar large" style="background: var(--info);">EL</div>
+                            <div class="user-avatar large" style="background: #8B5CF6;">MT</div>
                             <div class="user-main-info">
                                 <div class="user-name-row">
-                                    <h4>Emma Lee</h4>
-                                    <span class="role-badge roommate">Roommate</span>
+                                    <h4>Malik Tariq</h4>
+                                    <span class="role-badge landlord">Landlord</span>
                                 </div>
                                 <div class="user-contact">
-                                    <span>📧 emma.l@email.com</span>
-                                    <span>📱 (555) 456-7890</span>
+                                    <span>📧 malik.tariq@email.com</span>
+                                    <span>📱 0333-9876543</span>
                                 </div>
                             </div>
                         </div>
                         <div class="user-details-grid">
                             <div class="user-detail">
-                                <div class="detail-label">Move-in Date</div>
-                                <div class="detail-value">May 15, 2024</div>
+                                <div class="detail-label">Property Owner</div>
+                                <div class="detail-value">Since Jan 2020</div>
                             </div>
                             <div class="user-detail">
-                                <div class="detail-label">Room</div>
-                                <div class="detail-value">Room C</div>
+                                <div class="detail-label">Property</div>
+                                <div class="detail-value">House #12, F-10/3</div>
                             </div>
                             <div class="user-detail">
-                                <div class="detail-label">Rent Share</div>
-                                <div class="detail-value">$300/month</div>
+                                <div class="detail-label">Monthly Rent</div>
+                                <div class="detail-value">PKR 45,000/month</div>
                             </div>
                             <div class="user-detail">
                                 <div class="detail-label">Payment Status</div>
-                                <div class="detail-value status-warning">2 pending bills</div>
+                                <div class="detail-value status-success">Received ✓</div>
                             </div>
                         </div>
                         <div class="user-actions">
-                            <button class="btn-small btn-secondary" onclick="editUser(4)">Edit Info</button>
-                            <button class="btn-small btn-secondary" onclick="viewActivity(4)">View Activity</button>
-                            <button class="btn-small" style="background: var(--danger-light); color: var(--danger);" onclick="removeUser(4)">Remove</button>
+                            <button class="btn-small btn-secondary" onclick="editUser(4)">View Details</button>
+                            <button class="btn-small btn-secondary" onclick="viewActivity(4)">Contact Info</button>
+                        </div>
+                    </div>
+
+                    <!-- User 5 (Usman Electrician - Maintenance) -->
+                    <div class="user-card">
+                        <div class="user-card-header">
+                            <div class="user-avatar large" style="background: #F59E0B;">UE</div>
+                            <div class="user-main-info">
+                                <div class="user-name-row">
+                                    <h4>Usman Electrician</h4>
+                                    <span class="role-badge maintenance">Maintenance</span>
+                                </div>
+                                <div class="user-contact">
+                                    <span>📧 usman.electric@email.com</span>
+                                    <span>📱 0345-1111222</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-details-grid">
+                            <div class="user-detail">
+                                <div class="detail-label">Service Since</div>
+                                <div class="detail-value">March 2024</div>
+                            </div>
+                            <div class="user-detail">
+                                <div class="detail-label">Specialty</div>
+                                <div class="detail-value">Electrical Work</div>
+                            </div>
+                            <div class="user-detail">
+                                <div class="detail-label">Active Tickets</div>
+                                <div class="detail-value">3 tasks</div>
+                            </div>
+                            <div class="user-detail">
+                                <div class="detail-label">Completed Jobs</div>
+                                <div class="detail-value status-success">12 this month ✓</div>
+                            </div>
+                        </div>
+                        <div class="user-actions">
+                            <button class="btn-small btn-secondary" onclick="editUser(5)">View Profile</button>
+                            <button class="btn-small btn-secondary" onclick="viewActivity(5)">Work History</button>
                         </div>
                     </div>
                 </div>
@@ -336,5 +374,13 @@
 
     <script src="app.js"></script>
     <script src="users.js"></script>
+    <script>
+        // Authentication check - Admin only
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+        if (!currentUser.username || currentUser.role !== 'admin') {
+            alert('⚠️ Access Denied: Only House Admin can access User Management');
+            window.location.href = currentUser.dashboard || 'login.html';
+        }
+    </script>
 </body>
 </html>

@@ -1,7 +1,29 @@
 // ===== SMART-SHARE HOUSEHOLD MANAGER - MAIN APP.JS =====
 
+// ===== AUTHENTICATION CHECK =====
+function checkAuthentication() {
+    const currentUser = sessionStorage.getItem('currentUser');
+    const currentPage = window.location.pathname.split('/').pop();
+    
+    // Pages that don't require authentication
+    const publicPages = ['login.html', 'guest-view.html'];
+    
+    // If not on a public page and not logged in, redirect to login
+    if (!publicPages.includes(currentPage) && !currentUser) {
+        window.location.href = 'login.html';
+        return null;
+    }
+    
+    // If logged in, return user data
+    if (currentUser) {
+        return JSON.parse(currentUser);
+    }
+    
+    return null;
+}
+
 // ===== GLOBAL STATE =====
-let currentRole = 'admin'; // Default role
+let currentUser = null;
 let darkMode = false;
 
 // ===== INITIALIZATION =====
@@ -10,18 +32,58 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeApp() {
+    // Check authentication first
+    currentUser = checkAuthentication();
+    
+    // If no user and not on public page, return (already redirected)
+    if (!currentUser && !['login.html', 'guest-view.html'].includes(window.location.pathname.split('/').pop())) {
+        return;
+    }
+    
     // Load saved theme preference
     loadThemePreference();
     
     // Setup event listeners
     setupEventListeners();
     
-    // Load role from localStorage or default
-    const savedRole = localStorage.getItem('userRole') || 'admin';
-    switchRole(savedRole);
+    // Update user display from session
+    if (currentUser) {
+        updateUserDisplay();
+    }
     
     // Update active nav item based on current page
     updateActiveNavItem();
+}
+
+// ===== UPDATE USER DISPLAY FROM SESSION =====
+function updateUserDisplay() {
+    // Update user name in header
+    const userNameElement = document.getElementById('userName') || document.querySelector('.user-name');
+    if (userNameElement && currentUser) {
+        userNameElement.textContent = currentUser.fullName;
+    }
+    
+    // Update role badge
+    const roleElement = document.querySelector('.user-role');
+    if (roleElement && currentUser) {
+        const roleNames = {
+            'admin': 'House Admin',
+            'roommate': 'Roommate',
+            'landlord': 'Landlord',
+            'maintenance': 'Maintenance Staff'
+        };
+        roleElement.textContent = roleNames[currentUser.role] || currentUser.role;
+        
+        // Update role badge class
+        roleElement.className = 'user-role';
+        roleElement.classList.add(`${currentUser.role}-badge`);
+    }
+    
+    // Update role selector if exists (for old pages)
+    const roleSelect = document.getElementById('roleSelect');
+    if (roleSelect && currentUser) {
+        roleSelect.value = currentUser.role;
+    }
 }
 
 // ===== EVENT LISTENERS SETUP =====
@@ -61,36 +123,19 @@ function setupEventListeners() {
     });
 }
 
-// ===== ROLE SWITCHING =====
+// ===== ROLE SWITCHING (Updated for new auth system) =====
 function switchRole(role) {
-    currentRole = role;
-    localStorage.setItem('userRole', role);
+    // This function is deprecated in new auth system
+    // Role is determined by login, not by switching
+    // Keep for backward compatibility with old pages
     
-    // Update role selector
-    const roleSelect = document.getElementById('roleSelect');
-    if (roleSelect) {
-        roleSelect.value = role;
-    }
-    
-    // Update displayed role
-    const roleDisplay = document.getElementById('currentRole');
-    if (roleDisplay) {
-        const roleNames = {
-            'admin': 'Admin',
-            'roommate': 'Roommate',
-            'landlord': 'Landlord'
-        };
-        roleDisplay.textContent = roleNames[role] || 'User';
-    }
+    if (!currentUser) return;
     
     // Update body attribute for role-specific styling
-    document.body.setAttribute('data-role', role);
+    document.body.setAttribute('data-role', currentUser.role);
     
     // Show/hide navigation items based on role
-    updateNavigationForRole(role);
-    
-    // Show notification
-    showNotification(`Switched to ${role.charAt(0).toUpperCase() + role.slice(1)} view`);
+    updateNavigationForRole(currentUser.role);
 }
 
 function updateNavigationForRole(role) {
@@ -280,11 +325,11 @@ function copyToClipboard(text) {
     });
 }
 
-// Format currency
+// Format currency (Updated for PKR)
 function formatCurrency(amount) {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-PK', {
         style: 'currency',
-        currency: 'USD'
+        currency: 'PKR'
     }).format(amount);
 }
 
@@ -306,6 +351,17 @@ function daysUntil(date) {
     return diffDays;
 }
 
+// ===== LOGOUT FUNCTION (Global) =====
+function handleLogout() {
+    if (confirm('Are you sure you want to logout?')) {
+        sessionStorage.removeItem('currentUser');
+        window.location.href = 'login.html';
+    }
+}
+
+// Make logout function globally accessible
+window.handleLogout = handleLogout;
+
 // ===== EXPORT FOR OTHER SCRIPTS =====
 window.smartShare = {
     openModal,
@@ -316,5 +372,6 @@ window.smartShare = {
     formatCurrency,
     formatDate,
     daysUntil,
-    currentRole: () => currentRole
+    currentUser: () => currentUser,
+    handleLogout
 };

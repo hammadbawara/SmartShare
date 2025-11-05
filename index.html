@@ -312,5 +312,19 @@
     </div>
 
     <script src="app.js"></script>
+    <script>
+        // Auto-redirect to appropriate dashboard based on login
+        (function() {
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+            
+            // If logged in, redirect to their dashboard
+            if (currentUser.username && currentUser.dashboard) {
+                window.location.href = currentUser.dashboard;
+            } else {
+                // Not logged in, redirect to login
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
 </body>
 </html>

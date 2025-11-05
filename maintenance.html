@@ -328,5 +328,17 @@
 
     <script src="app.js"></script>
     <script src="maintenance.js"></script>
+    <script>
+        // Authentication check
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+        if (!currentUser.username) {
+            window.location.href = 'login.html';
+        }
+        // Check role access (admin, landlord, and maintenance can access maintenance)
+        if (currentUser.role !== 'admin' && currentUser.role !== 'landlord' && currentUser.role !== 'maintenance') {
+            alert('⚠️ Access Denied: You do not have permission to view maintenance');
+            window.location.href = currentUser.dashboard || 'login.html';
+        }
+    </script>
 </body>
 </html>
