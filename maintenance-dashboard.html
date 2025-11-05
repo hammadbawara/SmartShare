@@ -386,16 +386,16 @@
         document.getElementById('currentDate').textContent = currentDate.toLocaleDateString('en-PK', options);
 
         // Toggle logout dropdown
-        document.getElementById('userInfoSection').addEventListener('click', function() {
+        document.getElementById('userInfoSection').addEventListener('click', function(e) {
+            e.stopPropagation();
             const dropdown = document.getElementById('logoutDropdown');
             dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
         });
 
         // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
-            const userInfo = document.getElementById('userInfoSection');
             const dropdown = document.getElementById('logoutDropdown');
-            if (!userInfo.contains(event.target) && !dropdown.contains(event.target)) {
+            if (dropdown && !event.target.closest('#userInfoSection') && !event.target.closest('#logoutDropdown')) {
                 dropdown.style.display = 'none';
             }
         });
@@ -409,8 +409,7 @@
         }
 
         // Hide navigation items based on role
-        const navItems = document.querySelectorAll('.nav-item[data-role]');
-        navItems.forEach(item => {
+        document.querySelectorAll('.nav-item[data-role]').forEach(item => {
             const allowedRoles = item.getAttribute('data-role').split(',');
             if (!allowedRoles.includes(currentUser.role)) {
                 item.style.display = 'none';
