@@ -9,22 +9,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Role Selector -->
-    <div class="role-selector">
-        <select id="roleSelect">
-            <option value="admin">House Admin</option>
-            <option value="roommate">Roommate</option>
-            <option value="landlord">Landlord</option>
-        </select>
-    </div>
-
     <!-- Sidebar Navigation -->
     <aside class="sidebar" id="sidebar">
         <div class="logo">
             <h2>🏠 Smart-Share</h2>
         </div>
         <nav class="nav-menu">
-            <a href="index.html" class="nav-item">
+            <a href="#" class="nav-item" id="dashboardLink">
                 <span class="icon">📊</span>
                 <span>Dashboard</span>
             </a>
@@ -36,7 +27,7 @@
                 <span class="icon">✓</span>
                 <span>Chores</span>
             </a>
-            <a href="maintenance.html" class="nav-item" data-role="admin,roommate,landlord">
+            <a href="maintenance.html" class="nav-item" data-role="admin,roommate,landlord,maintenance">
                 <span class="icon">🔧</span>
                 <span>Maintenance</span>
             </a>
@@ -52,18 +43,21 @@
                 <span class="icon">📢</span>
                 <span>Announcements</span>
             </a>
-            <a href="guest.html" class="nav-item guest-link">
+            <a href="guest-view.html" class="nav-item guest-link">
                 <span class="icon">🔓</span>
                 <span>Guest View</span>
             </a>
         </nav>
         <div class="sidebar-footer">
-            <div class="user-info">
-                <div class="user-avatar">JD</div>
+            <div class="user-info" id="userInfoSection" style="cursor: pointer;">
+                <div class="user-avatar" id="userAvatar">AK</div>
                 <div class="user-details">
-                    <div class="user-name">John Doe</div>
+                    <div class="user-name" id="userName">User</div>
                     <div class="user-role" id="currentRole">Admin</div>
                 </div>
+            </div>
+            <div class="logout-dropdown" id="logoutDropdown" style="display: none;">
+                <button class="logout-btn-sidebar" onclick="confirmLogout()">🚪 Logout</button>
             </div>
             <button class="btn-icon" id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
         </div>
@@ -248,11 +242,40 @@
         if (!currentUser.username) {
             window.location.href = 'login.html';
         }
-        // Check role access (admin and roommate can access announcements)
-        if (currentUser.role !== 'admin' && currentUser.role !== 'roommate') {
+        // Check role access (admin, roommate, and landlord can access)
+        if (currentUser.role !== 'admin' && currentUser.role !== 'roommate' && currentUser.role !== 'landlord') {
             alert('⚠️ Access Denied: You do not have permission to view announcements');
             window.location.href = currentUser.dashboard || 'login.html';
         }
+
+        // Update sidebar user info
+        document.getElementById('userName').textContent = currentUser.fullName || 'User';
+        const roleNames = {'admin': 'House Admin', 'roommate': 'Roommate', 'landlord': 'Landlord', 'maintenance': 'Maintenance Staff'};
+        document.getElementById('currentRole').textContent = roleNames[currentUser.role] || currentUser.role;
+        if (currentUser.fullName) {
+            document.getElementById('userAvatar').textContent = currentUser.fullName.split(' ').map(n => n[0]).join('').toUpperCase();
+        }
+        document.getElementById('dashboardLink').href = currentUser.dashboard || 'index.html';
+
+        // Toggle logout dropdown
+        document.getElementById('userInfoSection').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('logoutDropdown').style.display = document.getElementById('logoutDropdown').style.display === 'none' ? 'block' : 'none';
+        });
+        document.addEventListener('click', function() { document.getElementById('logoutDropdown').style.display = 'none'; });
+
+        // Logout function
+        function confirmLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Hide nav items based on role
+        document.querySelectorAll('.nav-item[data-role]').forEach(item => {
+            if (!item.getAttribute('data-role').split(',').includes(currentUser.role)) item.style.display = 'none';
+        });
     </script>
 </body>
 </html>
