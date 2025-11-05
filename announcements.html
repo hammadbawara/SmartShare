@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart-Share | Announcements</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="announcements.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Role Selector -->
+    <div class="role-selector">
+        <select id="roleSelect">
+            <option value="admin">House Admin</option>
+            <option value="roommate">Roommate</option>
+            <option value="landlord">Landlord</option>
+        </select>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2>🏠 Smart-Share</h2>
+        </div>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <span class="icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="finances.html" class="nav-item" data-role="admin,roommate">
+                <span class="icon">💰</span>
+                <span>Finances</span>
+            </a>
+            <a href="chores.html" class="nav-item" data-role="admin,roommate">
+                <span class="icon">✓</span>
+                <span>Chores</span>
+            </a>
+            <a href="maintenance.html" class="nav-item" data-role="admin,roommate,landlord">
+                <span class="icon">🔧</span>
+                <span>Maintenance</span>
+            </a>
+            <a href="shopping.html" class="nav-item" data-role="admin,roommate">
+                <span class="icon">🛒</span>
+                <span>Shopping List</span>
+            </a>
+            <a href="users.html" class="nav-item" data-role="admin">
+                <span class="icon">👥</span>
+                <span>User Management</span>
+            </a>
+            <a href="announcements.html" class="nav-item active" data-role="admin,roommate,landlord">
+                <span class="icon">📢</span>
+                <span>Announcements</span>
+            </a>
+            <a href="guest.html" class="nav-item guest-link">
+                <span class="icon">🔓</span>
+                <span>Guest View</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">JD</div>
+                <div class="user-details">
+                    <div class="user-name">John Doe</div>
+                    <div class="user-role" id="currentRole">Admin</div>
+                </div>
+            </div>
+            <button class="btn-icon" id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="page-header">
+            <div>
+                <h1>Announcements</h1>
+                <p class="page-subtitle">Stay informed about house updates and events</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary landlord-only" onclick="openModal('newAnnouncementModal')">+ Post Announcement</button>
+                <button class="btn-menu" id="menuToggle">☰</button>
+            </div>
+        </header>
+
+        <!-- Announcements Feed -->
+        <div class="announcements-container">
+            <!-- Announcement 1 - Important -->
+            <article class="announcement-card important">
+                <div class="announcement-badge">🔴 Important</div>
+                <div class="announcement-header">
+                    <div class="announcement-author">
+                        <div class="user-avatar" style="background: var(--danger);">LL</div>
+                        <div>
+                            <div class="author-name">Landlord</div>
+                            <div class="announcement-date">November 3, 2025 at 10:30 AM</div>
+                        </div>
+                    </div>
+                    <button class="announcement-menu landlord-only">⋯</button>
+                </div>
+                <h2 class="announcement-title">Water Main Maintenance - Service Interruption</h2>
+                <div class="announcement-content">
+                    <p>Please be advised that there will be a scheduled water service interruption on <strong>Thursday, November 7th from 9:00 AM to 2:00 PM</strong>.</p>
+                    <p>The city will be performing maintenance on the water main. Please plan accordingly and store water if needed for this time period.</p>
+                    <p>We apologize for any inconvenience this may cause.</p>
+                </div>
+                <div class="announcement-footer">
+                    <button class="reaction-btn">👍 5</button>
+                    <button class="reaction-btn">❤️ 2</button>
+                    <span class="read-status">Read by 4 people</span>
+                </div>
+            </article>
+
+            <!-- Announcement 2 - General -->
+            <article class="announcement-card">
+                <div class="announcement-badge">📢 General</div>
+                <div class="announcement-header">
+                    <div class="announcement-author">
+                        <div class="user-avatar" style="background: var(--primary);">JD</div>
+                        <div>
+                            <div class="author-name">John Doe</div>
+                            <div class="announcement-date">November 1, 2025 at 7:15 PM</div>
+                        </div>
+                    </div>
+                    <button class="announcement-menu">⋯</button>
+                </div>
+                <h2 class="announcement-title">Monthly House Meeting - This Saturday</h2>
+                <div class="announcement-content">
+                    <p>Hey everyone! 👋</p>
+                    <p>Let's have our monthly house meeting this <strong>Saturday, November 9th at 6:00 PM</strong> in the living room. We'll discuss:</p>
+                    <ul>
+                        <li>Upcoming bills and expenses</li>
+                        <li>Chore schedule adjustments</li>
+                        <li>House maintenance priorities</li>
+                        <li>Any concerns or suggestions</li>
+                    </ul>
+                    <p>Pizza will be provided! 🍕 Please confirm your attendance in the group chat.</p>
+                </div>
+                <div class="announcement-footer">
+                    <button class="reaction-btn">👍 8</button>
+                    <button class="reaction-btn">🍕 4</button>
+                    <span class="read-status">Read by 4 people</span>
+                </div>
+            </article>
+
+            <!-- Announcement 3 - Landlord -->
+            <article class="announcement-card landlord-post">
+                <div class="announcement-badge">🏠 From Landlord</div>
+                <div class="announcement-header">
+                    <div class="announcement-author">
+                        <div class="user-avatar" style="background: var(--warning);">LL</div>
+                        <div>
+                            <div class="author-name">Landlord</div>
+                            <div class="announcement-date">October 28, 2025 at 2:45 PM</div>
+                        </div>
+                    </div>
+                    <button class="announcement-menu landlord-only">⋯</button>
+                </div>
+                <h2 class="announcement-title">New Recycling Guidelines</h2>
+                <div class="announcement-content">
+                    <p>The city has updated their recycling guidelines. Please note the following changes:</p>
+                    <ul>
+                        <li><strong>Plastic bags are no longer accepted</strong> - Please use the designated plastic bag bin at the grocery store</li>
+                        <li>Pizza boxes should be composted if soiled, or recycled if clean</li>
+                        <li>All containers must be rinsed before recycling</li>
+                    </ul>
+                    <p>A detailed guide has been posted on the refrigerator. Thank you for helping keep our recycling program compliant!</p>
+                </div>
+                <div class="announcement-footer">
+                    <button class="reaction-btn">👍 6</button>
+                    <button class="reaction-btn">♻️ 3</button>
+                    <span class="read-status">Read by 3 people</span>
+                </div>
+            </article>
+
+            <!-- Announcement 4 - Event -->
+            <article class="announcement-card">
+                <div class="announcement-badge">🎉 Event</div>
+                <div class="announcement-header">
+                    <div class="announcement-author">
+                        <div class="user-avatar" style="background: var(--success);">SM</div>
+                        <div>
+                            <div class="author-name">Sarah Miller</div>
+                            <div class="announcement-date">October 25, 2025 at 9:00 AM</div>
+                        </div>
+                    </div>
+                    <button class="announcement-menu">⋯</button>
+                </div>
+                <h2 class="announcement-title">Game Night This Friday!</h2>
+                <div class="announcement-content">
+                    <p>Let's do a game night this Friday starting at 8 PM! 🎲🎮</p>
+                    <p>I've got some board games and we can also hook up the PlayStation. Bring your favorite snacks and drinks!</p>
+                    <p>Let me know if you're interested so I can plan accordingly. All are welcome!</p>
+                </div>
+                <div class="announcement-footer">
+                    <button class="reaction-btn">👍 7</button>
+                    <button class="reaction-btn">🎮 5</button>
+                    <button class="reaction-btn">🎲 3</button>
+                    <span class="read-status">Read by 4 people</span>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <!-- New Announcement Modal -->
+    <div class="modal" id="newAnnouncementModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Post New Announcement</h3>
+                <button class="modal-close" onclick="closeModal('newAnnouncementModal')">&times;</button>
+            </div>
+            <form class="modal-body" id="newAnnouncementForm">
+                <div class="form-group">
+                    <label for="announcementTitle">Title *</label>
+                    <input type="text" id="announcementTitle" required placeholder="Brief, descriptive title">
+                </div>
+                <div class="form-group">
+                    <label for="announcementContent">Content *</label>
+                    <textarea id="announcementContent" rows="6" required placeholder="Write your announcement here..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="announcementType">Type *</label>
+                    <select id="announcementType" required>
+                        <option value="general">General</option>
+                        <option value="important">Important</option>
+                        <option value="event">Event</option>
+                        <option value="maintenance">Maintenance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="pinAnnouncement">
+                        Pin to top (Important announcements only)
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('newAnnouncementModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Post Announcement</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="announcements.js"></script>
+</body>
+</html>

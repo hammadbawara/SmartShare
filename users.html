@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart-Share | User Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="users.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Role Selector -->
+    <div class="role-selector">
+        <select id="roleSelect">
+            <option value="admin">House Admin</option>
+            <option value="roommate">Roommate</option>
+            <option value="landlord">Landlord</option>
+        </select>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2>🏠 Smart-Share</h2>
+        </div>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <span class="icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="finances.html" class="nav-item" data-role="admin,roommate">
+                <span class="icon">💰</span>
+                <span>Finances</span>
+            </a>
+            <a href="chores.html" class="nav-item" data-role="admin,roommate">
+                <span class="icon">✓</span>
+                <span>Chores</span>
+            </a>
+            <a href="maintenance.html" class="nav-item" data-role="admin,roommate,landlord">
+                <span class="icon">🔧</span>
+                <span>Maintenance</span>
+            </a>
+            <a href="shopping.html" class="nav-item" data-role="admin,roommate">
+                <span class="icon">🛒</span>
+                <span>Shopping List</span>
+            </a>
+            <a href="users.html" class="nav-item active" data-role="admin">
+                <span class="icon">👥</span>
+                <span>User Management</span>
+            </a>
+            <a href="announcements.html" class="nav-item" data-role="admin,roommate,landlord">
+                <span class="icon">📢</span>
+                <span>Announcements</span>
+            </a>
+            <a href="guest.html" class="nav-item guest-link">
+                <span class="icon">🔓</span>
+                <span>Guest View</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">JD</div>
+                <div class="user-details">
+                    <div class="user-name">John Doe</div>
+                    <div class="user-role" id="currentRole">Admin</div>
+                </div>
+            </div>
+            <button class="btn-icon" id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="page-header">
+            <div>
+                <h1>User Management</h1>
+                <p class="page-subtitle">Manage household members and their access</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary" onclick="openModal('addUserModal')">+ Add Roommate</button>
+                <button class="btn-menu" id="menuToggle">☰</button>
+            </div>
+        </header>
+
+        <!-- User Stats -->
+        <section class="user-stats">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--primary-light);">👥</div>
+                <div class="stat-content">
+                    <div class="stat-label">Total Roommates</div>
+                    <div class="stat-value">4</div>
+                    <div class="stat-change">All active</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--success-light);">⭐</div>
+                <div class="stat-content">
+                    <div class="stat-label">Admins</div>
+                    <div class="stat-value">1</div>
+                    <div class="stat-change">Full access</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--info-light);">📅</div>
+                <div class="stat-content">
+                    <div class="stat-label">Avg. Stay Duration</div>
+                    <div class="stat-value">8 mo</div>
+                    <div class="stat-change">Current residents</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Active Roommates -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Active Roommates</h3>
+            </div>
+            <div class="card-body">
+                <div class="users-list">
+                    <!-- User 1 - Admin -->
+                    <div class="user-card admin">
+                        <div class="user-card-header">
+                            <div class="user-avatar large" style="background: var(--primary);">JD</div>
+                            <div class="user-main-info">
+                                <div class="user-name-row">
+                                    <h4>John Doe</h4>
+                                    <span class="role-badge admin">Admin</span>
+                                </div>
+                                <div class="user-contact">
+                                    <span>📧 john.doe@email.com</span>
+                                    <span>📱 (555) 123-4567</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-details-grid">
+                            <div class="user-detail">
+                                <div class="detail-label">Move-in Date</div>
+                                <div class="detail-value">March 15, 2024</div>
+                            </div>
+                            <div class="user-detail">
+                                <div class="detail-label">Room</div>
+                                <div class="detail-value">Master Bedroom</div>
+                            </div>
+                            <div class="user-detail">
+                                <div class="detail-label">Rent Share</div>
+                                <div class="detail-value">$300/month</div>
+                            </div>
+                            <div class="user-detail">
+                                <div class="detail-label">Payment Status</div>
+                                <div class="detail-value status-warning">3 pending bills</div>
+                            </div>
+                        </div>
+                        <div class="user-actions">
+                            <button class="btn-small btn-secondary" onclick="editUser(1)">Edit Info</button>
+                            <button class="btn-small btn-secondary" onclick="viewActivity(1)">View Activity</button>
+                        </div>
+                    </div>
+
+                    <!-- User 2 -->
+                    <div class="user-card">
+                        <div class="user-card-header">
+                            <div class="user-avatar large" style="background: var(--success);">SM</div>
+                            <div class="user-main-info">
+                                <div class="user-name-row">
+                                    <h4>Sarah Miller</h4>
+                                    <span class="role-badge roommate">Roommate</span>
+                                </div>
+                                <div class="user-contact">
+                                    <span>📧 sarah.m@email.com</span>
+                                    <span>📱 (555) 234-5678</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-details-grid">
+                            <div class="user-detail">
+                                <div class="detail-label">Move-in Date</div>
+                                <div class="detail-value">March 15, 2024</div>
+                            </div>
+                            <div class="user-detail">
+                                <div class="detail-label">Room</div>
+                                <div class="detail-value">Room A</div>
+                            </div>
+                            <div class="user-detail">
+                                <div class="detail-label">Rent Share</div>
+                                <div class="detail-value">$300/month</div>
+                            </div>
+                            <div class="user-detail">
+                                <div class="detail-label">Payment Status</div>
+                                <div class="detail-value status-success">All paid ✓</div>
+                            </div>
+                        </div>
+                        <div class="user-actions">
+                            <button class="btn-small btn-secondary" onclick="editUser(2)">Edit Info</button>
+                            <button class="btn-small btn-secondary" onclick="viewActivity(2)">View Activity</button>
+                            <button class="btn-small" style="background: var(--danger-light); color: var(--danger);" onclick="removeUser(2)">Remove</button>
+                        </div>
+                    </div>
+
+                    <!-- User 3 -->
+                    <div class="user-card">
+                        <div class="user-card-header">
+                            <div class="user-avatar large" style="background: var(--warning);">MR</div>
+                            <div class="user-main-info">
+                                <div class="user-name-row">
+                                    <h4>Mike Roberts</h4>
+                                    <span class="role-badge roommate">Roommate</span>
+                                </div>
+                                <div class="user-contact">
+                                    <span>📧 mike.r@email.com</span>
+                                    <span>📱 (555) 345-6789</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-details-grid">
+                            <div class="user-detail">
+                                <div class="detail-label">Move-in Date</div>
+                                <div class="detail-value">April 1, 2024</div>
+                            </div>
+                            <div class="user-detail">
+                                <div class="detail-label">Room</div>
+                                <div class="detail-value">Room B</div>
+                            </div>
+                            <div class="user-detail">
+                                <div class="detail-label">Rent Share</div>
+                                <div class="detail-value">$300/month</div>
+                            </div>
+                            <div class="user-detail">
+                                <div class="detail-label">Payment Status</div>
+                                <div class="detail-value status-warning">1 pending bill</div>
+                            </div>
+                        </div>
+                        <div class="user-actions">
+                            <button class="btn-small btn-secondary" onclick="editUser(3)">Edit Info</button>
+                            <button class="btn-small btn-secondary" onclick="viewActivity(3)">View Activity</button>
+                            <button class="btn-small" style="background: var(--danger-light); color: var(--danger);" onclick="removeUser(3)">Remove</button>
+                        </div>
+                    </div>
+
+                    <!-- User 4 -->
+                    <div class="user-card">
+                        <div class="user-card-header">
+                            <div class="user-avatar large" style="background: var(--info);">EL</div>
+                            <div class="user-main-info">
+                                <div class="user-name-row">
+                                    <h4>Emma Lee</h4>
+                                    <span class="role-badge roommate">Roommate</span>
+                                </div>
+                                <div class="user-contact">
+                                    <span>📧 emma.l@email.com</span>
+                                    <span>📱 (555) 456-7890</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-details-grid">
+                            <div class="user-detail">
+                                <div class="detail-label">Move-in Date</div>
+                                <div class="detail-value">May 15, 2024</div>
+                            </div>
+                            <div class="user-detail">
+                                <div class="detail-label">Room</div>
+                                <div class="detail-value">Room C</div>
+                            </div>
+                            <div class="user-detail">
+                                <div class="detail-label">Rent Share</div>
+                                <div class="detail-value">$300/month</div>
+                            </div>
+                            <div class="user-detail">
+                                <div class="detail-label">Payment Status</div>
+                                <div class="detail-value status-warning">2 pending bills</div>
+                            </div>
+                        </div>
+                        <div class="user-actions">
+                            <button class="btn-small btn-secondary" onclick="editUser(4)">Edit Info</button>
+                            <button class="btn-small btn-secondary" onclick="viewActivity(4)">View Activity</button>
+                            <button class="btn-small" style="background: var(--danger-light); color: var(--danger);" onclick="removeUser(4)">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add User Modal -->
+    <div class="modal" id="addUserModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Roommate</h3>
+                <button class="modal-close" onclick="closeModal('addUserModal')">&times;</button>
+            </div>
+            <form class="modal-body" id="addUserForm">
+                <div class="form-group">
+                    <label for="userName">Full Name *</label>
+                    <input type="text" id="userName" required placeholder="John Smith">
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email Address *</label>
+                    <input type="email" id="userEmail" required placeholder="john@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="userPhone">Phone Number *</label>
+                    <input type="tel" id="userPhone" required placeholder="(555) 123-4567">
+                </div>
+                <div class="form-group">
+                    <label for="userRoom">Room Assignment *</label>
+                    <select id="userRoom" required>
+                        <option value="">Select Room</option>
+                        <option value="master">Master Bedroom</option>
+                        <option value="a">Room A</option>
+                        <option value="b">Room B</option>
+                        <option value="c">Room C</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="userRent">Monthly Rent Share *</label>
+                    <input type="number" id="userRent" step="0.01" required placeholder="300.00">
+                </div>
+                <div class="form-group">
+                    <label for="userMoveIn">Move-in Date *</label>
+                    <input type="date" id="userMoveIn" required>
+                </div>
+                <div class="form-group">
+                    <label for="userRole">Role *</label>
+                    <select id="userRole" required>
+                        <option value="roommate" selected>Roommate</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                    <small>Admins have full access to all features including user management</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('addUserModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Roommate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="users.js"></script>
+</body>
+</html>

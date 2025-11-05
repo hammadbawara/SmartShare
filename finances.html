@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart-Share | Finances</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="finances.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Role Selector -->
+    <div class="role-selector">
+        <select id="roleSelect">
+            <option value="admin">House Admin</option>
+            <option value="roommate">Roommate</option>
+            <option value="landlord">Landlord</option>
+        </select>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2>🏠 Smart-Share</h2>
+        </div>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <span class="icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="finances.html" class="nav-item active" data-role="admin,roommate">
+                <span class="icon">💰</span>
+                <span>Finances</span>
+            </a>
+            <a href="chores.html" class="nav-item" data-role="admin,roommate">
+                <span class="icon">✓</span>
+                <span>Chores</span>
+            </a>
+            <a href="maintenance.html" class="nav-item" data-role="admin,roommate,landlord">
+                <span class="icon">🔧</span>
+                <span>Maintenance</span>
+            </a>
+            <a href="shopping.html" class="nav-item" data-role="admin,roommate">
+                <span class="icon">🛒</span>
+                <span>Shopping List</span>
+            </a>
+            <a href="users.html" class="nav-item" data-role="admin">
+                <span class="icon">👥</span>
+                <span>User Management</span>
+            </a>
+            <a href="announcements.html" class="nav-item" data-role="admin,roommate,landlord">
+                <span class="icon">📢</span>
+                <span>Announcements</span>
+            </a>
+            <a href="guest.html" class="nav-item guest-link">
+                <span class="icon">🔓</span>
+                <span>Guest View</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">JD</div>
+                <div class="user-details">
+                    <div class="user-name">John Doe</div>
+                    <div class="user-role" id="currentRole">Admin</div>
+                </div>
+            </div>
+            <button class="btn-icon" id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="page-header">
+            <div>
+                <h1>Finances</h1>
+                <p class="page-subtitle">Track bills, payments, and household expenses</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary" onclick="openModal('addBillModal')">+ Add Bill</button>
+                <button class="btn-menu" id="menuToggle">☰</button>
+            </div>
+        </header>
+
+        <!-- Financial Summary -->
+        <section class="finance-summary">
+            <div class="summary-card total">
+                <div class="summary-icon">💵</div>
+                <div class="summary-content">
+                    <div class="summary-label">Total Monthly Expenses</div>
+                    <div class="summary-value">$1,370.00</div>
+                    <div class="summary-detail">Split among 4 roommates</div>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon">👤</div>
+                <div class="summary-content">
+                    <div class="summary-label">Your Share</div>
+                    <div class="summary-value">$342.50</div>
+                    <div class="summary-detail">Per month</div>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon">⚠️</div>
+                <div class="summary-content">
+                    <div class="summary-label">Outstanding Amount</div>
+                    <div class="summary-value outstanding">$347.50</div>
+                    <div class="summary-detail">3 bills unpaid</div>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon">✓</div>
+                <div class="summary-content">
+                    <div class="summary-label">Paid This Month</div>
+                    <div class="summary-value paid">$15.00</div>
+                    <div class="summary-detail">3 bills paid</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Expense Breakdown -->
+        <div class="finance-grid">
+            <!-- Chart Section -->
+            <div class="card chart-card">
+                <div class="card-header">
+                    <h3>Expense Breakdown</h3>
+                    <select class="filter-select">
+                        <option>This Month</option>
+                        <option>Last Month</option>
+                        <option>Last 3 Months</option>
+                    </select>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <div class="bar-chart">
+                            <div class="bar-item">
+                                <div class="bar-label">Rent</div>
+                                <div class="bar-wrapper">
+                                    <div class="bar-fill" style="width: 87.6%; background: var(--primary);" title="$1200">
+                                        <span class="bar-value">$1200</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bar-item">
+                                <div class="bar-label">Electricity</div>
+                                <div class="bar-wrapper">
+                                    <div class="bar-fill" style="width: 5.8%; background: var(--warning);" title="$80">
+                                        <span class="bar-value">$80</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bar-item">
+                                <div class="bar-label">Internet</div>
+                                <div class="bar-wrapper">
+                                    <div class="bar-fill" style="width: 3.6%; background: var(--info);" title="$50">
+                                        <span class="bar-value">$50</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bar-item">
+                                <div class="bar-label">Water</div>
+                                <div class="bar-wrapper">
+                                    <div class="bar-fill" style="width: 2.9%; background: var(--success);" title="$40">
+                                        <span class="bar-value">$40</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bills List -->
+            <div class="card bills-card">
+                <div class="card-header">
+                    <h3>All Bills</h3>
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">All</button>
+                        <button class="filter-tab" data-filter="unpaid">Unpaid</button>
+                        <button class="filter-tab" data-filter="paid">Paid</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="bills-table">
+                        <thead>
+                            <tr>
+                                <th>Bill Name</th>
+                                <th>Total Amount</th>
+                                <th>Your Share</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="billsTableBody">
+                            <tr data-status="unpaid">
+                                <td><strong>Rent</strong></td>
+                                <td>$1,200.00</td>
+                                <td class="highlight">$300.00</td>
+                                <td>Nov 1, 2025</td>
+                                <td><span class="status-badge overdue">Overdue</span></td>
+                                <td><button class="btn-small btn-primary" onclick="markAsPaid(this)">Pay Now</button></td>
+                            </tr>
+                            <tr data-status="paid">
+                                <td><strong>Water</strong></td>
+                                <td>$40.00</td>
+                                <td class="highlight">$10.00</td>
+                                <td>Nov 5, 2025</td>
+                                <td><span class="status-badge paid">Paid</span></td>
+                                <td><span class="paid-date">Paid Oct 28</span></td>
+                            </tr>
+                            <tr data-status="unpaid">
+                                <td><strong>Electricity</strong></td>
+                                <td>$80.00</td>
+                                <td class="highlight">$20.00</td>
+                                <td>Nov 10, 2025</td>
+                                <td><span class="status-badge pending">Pending</span></td>
+                                <td><button class="btn-small btn-primary" onclick="markAsPaid(this)">Pay Now</button></td>
+                            </tr>
+                            <tr data-status="unpaid">
+                                <td><strong>Internet</strong></td>
+                                <td>$50.00</td>
+                                <td class="highlight">$12.50</td>
+                                <td>Nov 15, 2025</td>
+                                <td><span class="status-badge pending">Pending</span></td>
+                                <td><button class="btn-small btn-primary" onclick="markAsPaid(this)">Pay Now</button></td>
+                            </tr>
+                            <tr data-status="paid">
+                                <td><strong>Gas</strong></td>
+                                <td>$60.00</td>
+                                <td class="highlight">$15.00</td>
+                                <td>Nov 8, 2025</td>
+                                <td><span class="status-badge paid">Paid</span></td>
+                                <td><span class="paid-date">Paid Nov 2</span></td>
+                            </tr>
+                            <tr data-status="paid">
+                                <td><strong>Trash Service</strong></td>
+                                <td>$25.00</td>
+                                <td class="highlight">$6.25</td>
+                                <td>Nov 12, 2025</td>
+                                <td><span class="status-badge paid">Paid</span></td>
+                                <td><span class="paid-date">Paid Nov 1</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Payment History -->
+            <div class="card history-card">
+                <div class="card-header">
+                    <h3>Payment History</h3>
+                    <select class="filter-select">
+                        <option>Last 30 Days</option>
+                        <option>Last 3 Months</option>
+                        <option>Last 6 Months</option>
+                        <option>This Year</option>
+                    </select>
+                </div>
+                <div class="card-body">
+                    <div class="history-timeline">
+                        <div class="history-item">
+                            <div class="history-date">Nov 2, 2025</div>
+                            <div class="history-content">
+                                <div class="history-title">Gas Bill Payment</div>
+                                <div class="history-details">Paid $15.00 • Transaction #12345</div>
+                            </div>
+                            <div class="history-amount">-$15.00</div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-date">Nov 1, 2025</div>
+                            <div class="history-content">
+                                <div class="history-title">Trash Service Payment</div>
+                                <div class="history-details">Paid $6.25 • Transaction #12344</div>
+                            </div>
+                            <div class="history-amount">-$6.25</div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-date">Oct 28, 2025</div>
+                            <div class="history-content">
+                                <div class="history-title">Water Bill Payment</div>
+                                <div class="history-details">Paid $10.00 • Transaction #12343</div>
+                            </div>
+                            <div class="history-amount">-$10.00</div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-date">Oct 15, 2025</div>
+                            <div class="history-content">
+                                <div class="history-title">Internet Payment</div>
+                                <div class="history-details">Paid $12.50 • Transaction #12342</div>
+                            </div>
+                            <div class="history-amount">-$12.50</div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-date">Oct 10, 2025</div>
+                            <div class="history-content">
+                                <div class="history-title">Electricity Payment</div>
+                                <div class="history-details">Paid $20.00 • Transaction #12341</div>
+                            </div>
+                            <div class="history-amount">-$20.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roommate Contributions -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Roommate Contributions</h3>
+                </div>
+                <div class="card-body">
+                    <div class="contribution-list">
+                        <div class="contribution-item">
+                            <div class="contrib-user">
+                                <div class="user-avatar" style="background: var(--primary);">JD</div>
+                                <div>
+                                    <div class="contrib-name">John Doe</div>
+                                    <div class="contrib-status">3 bills pending</div>
+                                </div>
+                            </div>
+                            <div class="contrib-amounts">
+                                <div class="contrib-paid">Paid: $31.25</div>
+                                <div class="contrib-due">Due: $347.50</div>
+                            </div>
+                        </div>
+                        <div class="contribution-item">
+                            <div class="contrib-user">
+                                <div class="user-avatar" style="background: var(--success);">SM</div>
+                                <div>
+                                    <div class="contrib-name">Sarah Miller</div>
+                                    <div class="contrib-status all-paid">All bills paid ✓</div>
+                                </div>
+                            </div>
+                            <div class="contrib-amounts">
+                                <div class="contrib-paid">Paid: $342.50</div>
+                                <div class="contrib-due">Due: $0.00</div>
+                            </div>
+                        </div>
+                        <div class="contribution-item">
+                            <div class="contrib-user">
+                                <div class="user-avatar" style="background: var(--warning);">MR</div>
+                                <div>
+                                    <div class="contrib-name">Mike Roberts</div>
+                                    <div class="contrib-status">1 bill pending</div>
+                                </div>
+                            </div>
+                            <div class="contrib-amounts">
+                                <div class="contrib-paid">Paid: $330.00</div>
+                                <div class="contrib-due">Due: $12.50</div>
+                            </div>
+                        </div>
+                        <div class="contribution-item">
+                            <div class="contrib-user">
+                                <div class="user-avatar" style="background: var(--info);">EL</div>
+                                <div>
+                                    <div class="contrib-name">Emma Lee</div>
+                                    <div class="contrib-status">2 bills pending</div>
+                                </div>
+                            </div>
+                            <div class="contrib-amounts">
+                                <div class="contrib-paid">Paid: $322.50</div>
+                                <div class="contrib-due">Due: $20.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Bill Modal -->
+    <div class="modal" id="addBillModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Bill</h3>
+                <button class="modal-close" onclick="closeModal('addBillModal')">&times;</button>
+            </div>
+            <form class="modal-body" id="addBillForm">
+                <div class="form-group">
+                    <label for="billName">Bill Name *</label>
+                    <input type="text" id="billName" required placeholder="e.g., Cable TV, Netflix">
+                </div>
+                <div class="form-group">
+                    <label for="billAmount">Total Amount *</label>
+                    <input type="number" id="billAmount" step="0.01" required placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="billDueDate">Due Date *</label>
+                    <input type="date" id="billDueDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="billSplit">Split Method *</label>
+                    <select id="billSplit" required>
+                        <option value="equal">Split Equally (4 people)</option>
+                        <option value="custom">Custom Split</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="billRecurring">
+                        Recurring bill (monthly)
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('addBillModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Bill</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="finances.js"></script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+/* ===== GUEST PAGE STYLES ===== */
+
+.guest-page {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.guest-header {
+    background: var(--white);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.guest-logo h1 {
+    font-size: 28px;
+    color: var(--primary);
+    margin-bottom: 4px;
+}
+
+.guest-logo p {
+    color: var(--gray-600);
+    font-size: 14px;
+}
+
+.guest-content {
+    padding: 40px 24px;
+}
+
+.guest-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.guest-section {
+    margin-bottom: 32px;
+}
+
+/* Welcome Section */
+.welcome-section {
+    margin-bottom: 48px;
+}
+
+.welcome-card {
+    background: var(--white);
+    padding: 48px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+}
+
+.welcome-icon {
+    font-size: 64px;
+    margin-bottom: 24px;
+}
+
+.welcome-card h2 {
+    font-size: 36px;
+    color: var(--gray-900);
+    margin-bottom: 16px;
+}
+
+.welcome-card p {
+    font-size: 18px;
+    color: var(--gray-600);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Info Cards */
+.info-card {
+    background: var(--white);
+    box-shadow: var(--shadow);
+}
+
+.info-card.emergency-card {
+    border-left: 4px solid var(--danger);
+}
+
+/* Wi-Fi Information */
+.wifi-info {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.wifi-detail {
+    display: flex;
+    gap: 16px;
+    padding: 20px;
+    background: var(--gray-50);
+    border-radius: var(--border-radius-small);
+}
+
+.detail-icon {
+    font-size: 32px;
+}
+
+.detail-label {
+    font-size: 13px;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.detail-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gray-900);
+    font-family: 'Courier New', monospace;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.detail-value.copiable {
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.detail-value.copiable:hover {
+    color: var(--primary);
+}
+
+.copy-btn {
+    font-size: 16px;
+    opacity: 0.5;
+    transition: var(--transition);
+}
+
+.detail-value.copiable:hover .copy-btn {
+    opacity: 1;
+}
+
+.toggle-password {
+    font-size: 18px;
+    padding: 4px 8px;
+    background: var(--gray-200);
+    border-radius: var(--border-radius-small);
+    transition: var(--transition);
+}
+
+.toggle-password:hover {
+    background: var(--gray-300);
+}
+
+.wifi-note {
+    margin-top: 16px;
+    padding: 16px;
+    background: var(--info-light);
+    border-radius: var(--border-radius-small);
+    color: var(--gray-700);
+    font-size: 14px;
+}
+
+/* House Rules */
+.rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.rule-item {
+    display: flex;
+    gap: 16px;
+}
+
+.rule-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+}
+
+.rule-content h4 {
+    font-size: 18px;
+    color: var(--gray-900);
+    margin-bottom: 8px;
+}
+
+.rule-content p {
+    font-size: 14px;
+    color: var(--gray-600);
+    line-height: 1.6;
+}
+
+/* Emergency Contacts */
+.emergency-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.emergency-item {
+    padding: 20px;
+    background: var(--gray-50);
+    border-radius: var(--border-radius-small);
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.emergency-item.urgent {
+    background: var(--danger-light);
+    border: 2px solid var(--danger);
+}
+
+.emergency-icon {
+    font-size: 32px;
+}
+
+.emergency-label {
+    font-size: 13px;
+    color: var(--gray-500);
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.emergency-number {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.emergency-number:hover {
+    text-decoration: underline;
+}
+
+.emergency-item.urgent .emergency-number {
+    color: var(--danger);
+    font-size: 24px;
+}
+
+.emergency-info {
+    font-size: 14px;
+    color: var(--gray-700);
+    font-weight: 500;
+}
+
+/* Amenities */
+.amenities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+}
+
+.amenity-item {
+    padding: 20px;
+    background: var(--gray-50);
+    border-radius: var(--border-radius-small);
+    text-align: center;
+    transition: var(--transition);
+}
+
+.amenity-item:hover {
+    background: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.amenity-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+}
+
+.amenity-name {
+    font-weight: 600;
+    color: var(--gray-900);
+    font-size: 14px;
+}
+
+/* Parking Information */
+.parking-info p {
+    margin-bottom: 12px;
+    color: var(--gray-700);
+    line-height: 1.6;
+}
+
+.parking-info p:last-child {
+    margin-bottom: 0;
+}
+
+/* Trash & Recycling */
+.trash-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.trash-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    background: var(--gray-50);
+    border-radius: var(--border-radius-small);
+}
+
+.trash-icon {
+    font-size: 32px;
+}
+
+.trash-item h4 {
+    font-size: 16px;
+    color: var(--gray-900);
+    margin-bottom: 4px;
+}
+
+.trash-item p {
+    font-size: 14px;
+    color: var(--gray-600);
+}
+
+/* Thank You Card */
+.thank-you-card {
+    background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+    color: var(--white);
+    padding: 40px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+}
+
+.thank-you-card h3 {
+    font-size: 28px;
+    margin-bottom: 16px;
+}
+
+.thank-you-card p {
+    font-size: 16px;
+    opacity: 0.95;
+}
+
+/* Guest Footer */
+.guest-footer {
+    background: var(--white);
+    padding: 24px;
+    text-align: center;
+    color: var(--gray-600);
+    font-size: 14px;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design for Guest Page */
+@media (max-width: 768px) {
+    .guest-header {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+    
+    .welcome-card {
+        padding: 32px 24px;
+    }
+    
+    .welcome-icon {
+        font-size: 48px;
+    }
+    
+    .welcome-card h2 {
+        font-size: 28px;
+    }
+    
+    .rules-grid,
+    .emergency-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .amenities-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+}

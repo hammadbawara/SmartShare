@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart-Share | Shopping List</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="shopping.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Role Selector -->
+    <div class="role-selector">
+        <select id="roleSelect">
+            <option value="admin">House Admin</option>
+            <option value="roommate">Roommate</option>
+            <option value="landlord">Landlord</option>
+        </select>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2>🏠 Smart-Share</h2>
+        </div>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <span class="icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="finances.html" class="nav-item" data-role="admin,roommate">
+                <span class="icon">💰</span>
+                <span>Finances</span>
+            </a>
+            <a href="chores.html" class="nav-item" data-role="admin,roommate">
+                <span class="icon">✓</span>
+                <span>Chores</span>
+            </a>
+            <a href="maintenance.html" class="nav-item" data-role="admin,roommate,landlord">
+                <span class="icon">🔧</span>
+                <span>Maintenance</span>
+            </a>
+            <a href="shopping.html" class="nav-item active" data-role="admin,roommate">
+                <span class="icon">🛒</span>
+                <span>Shopping List</span>
+            </a>
+            <a href="users.html" class="nav-item" data-role="admin">
+                <span class="icon">👥</span>
+                <span>User Management</span>
+            </a>
+            <a href="announcements.html" class="nav-item" data-role="admin,roommate,landlord">
+                <span class="icon">📢</span>
+                <span>Announcements</span>
+            </a>
+            <a href="guest.html" class="nav-item guest-link">
+                <span class="icon">🔓</span>
+                <span>Guest View</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">JD</div>
+                <div class="user-details">
+                    <div class="user-name">John Doe</div>
+                    <div class="user-role" id="currentRole">Admin</div>
+                </div>
+            </div>
+            <button class="btn-icon" id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="page-header">
+            <div>
+                <h1>Shopping List</h1>
+                <p class="page-subtitle">Shared household shopping list for groceries and supplies</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary" onclick="openModal('addItemModal')">+ Add Item</button>
+                <button class="btn-menu" id="menuToggle">☰</button>
+            </div>
+        </header>
+
+        <!-- Shopping Stats -->
+        <section class="shopping-stats">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--info-light);">📝</div>
+                <div class="stat-content">
+                    <div class="stat-label">Total Items</div>
+                    <div class="stat-value">10</div>
+                    <div class="stat-change">3 claimed</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--warning-light);">🛒</div>
+                <div class="stat-content">
+                    <div class="stat-label">Pending Purchase</div>
+                    <div class="stat-value">7</div>
+                    <div class="stat-change">Needs volunteers</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--success-light);">✓</div>
+                <div class="stat-content">
+                    <div class="stat-label">This Week</div>
+                    <div class="stat-value">15</div>
+                    <div class="stat-change positive">Items purchased</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Add Form -->
+        <div class="card quick-add-card">
+            <div class="card-body">
+                <form class="quick-add-form" id="quickAddForm">
+                    <input type="text" id="quickItemName" placeholder="Type item name and press Enter..." class="quick-input">
+                    <button type="submit" class="btn-primary">Add</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Shopping Lists by Category -->
+        <div class="shopping-grid">
+            <!-- Groceries -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>🍎 Groceries</h3>
+                    <span class="item-count">5 items</span>
+                </div>
+                <div class="card-body">
+                    <div class="shopping-list">
+                        <div class="shopping-item">
+                            <div class="item-info">
+                                <input type="checkbox" class="item-checkbox" id="item1">
+                                <label for="item1" class="item-name">Milk (2 gallons)</label>
+                            </div>
+                            <div class="item-meta">
+                                <div class="item-claimed">
+                                    <div class="user-avatar tiny" style="background: var(--success);">SM</div>
+                                    <span class="claimed-text">Sarah M.</span>
+                                </div>
+                                <button class="item-delete" onclick="deleteItem(1)">×</button>
+                            </div>
+                        </div>
+                        <div class="shopping-item">
+                            <div class="item-info">
+                                <input type="checkbox" class="item-checkbox" id="item2">
+                                <label for="item2" class="item-name">Bread</label>
+                            </div>
+                            <div class="item-meta">
+                                <button class="btn-claim" onclick="claimItem(2)">Claim</button>
+                                <button class="item-delete" onclick="deleteItem(2)">×</button>
+                            </div>
+                        </div>
+                        <div class="shopping-item">
+                            <div class="item-info">
+                                <input type="checkbox" class="item-checkbox" id="item3">
+                                <label for="item3" class="item-name">Eggs (1 dozen)</label>
+                            </div>
+                            <div class="item-meta">
+                                <div class="item-claimed">
+                                    <div class="user-avatar tiny" style="background: var(--success);">SM</div>
+                                    <span class="claimed-text">Sarah M.</span>
+                                </div>
+                                <button class="item-delete" onclick="deleteItem(3)">×</button>
+                            </div>
+                        </div>
+                        <div class="shopping-item">
+                            <div class="item-info">
+                                <input type="checkbox" class="item-checkbox" id="item4">
+                                <label for="item4" class="item-name">Fresh Vegetables</label>
+                            </div>
+                            <div class="item-meta">
+                                <button class="btn-claim" onclick="claimItem(4)">Claim</button>
+                                <button class="item-delete" onclick="deleteItem(4)">×</button>
+                            </div>
+                        </div>
+                        <div class="shopping-item">
+                            <div class="item-info">
+                                <input type="checkbox" class="item-checkbox" id="item5">
+                                <label for="item5" class="item-name">Chicken Breast (2 lbs)</label>
+                            </div>
+                            <div class="item-meta">
+                                <button class="btn-claim" onclick="claimItem(5)">Claim</button>
+                                <button class="item-delete" onclick="deleteItem(5)">×</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Household Items -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>🧹 Household Items</h3>
+                    <span class="item-count">3 items</span>
+                </div>
+                <div class="card-body">
+                    <div class="shopping-list">
+                        <div class="shopping-item">
+                            <div class="item-info">
+                                <input type="checkbox" class="item-checkbox" id="item6">
+                                <label for="item6" class="item-name">Paper Towels</label>
+                            </div>
+                            <div class="item-meta">
+                                <div class="item-claimed">
+                                    <div class="user-avatar tiny" style="background: var(--primary);">JD</div>
+                                    <span class="claimed-text">John D.</span>
+                                </div>
+                                <button class="item-delete" onclick="deleteItem(6)">×</button>
+                            </div>
+                        </div>
+                        <div class="shopping-item">
+                            <div class="item-info">
+                                <input type="checkbox" class="item-checkbox" id="item7">
+                                <label for="item7" class="item-name">Dish Soap</label>
+                            </div>
+                            <div class="item-meta">
+                                <button class="btn-claim" onclick="claimItem(7)">Claim</button>
+                                <button class="item-delete" onclick="deleteItem(7)">×</button>
+                            </div>
+                        </div>
+                        <div class="shopping-item">
+                            <div class="item-info">
+                                <input type="checkbox" class="item-checkbox" id="item8">
+                                <label for="item8" class="item-name">Trash Bags</label>
+                            </div>
+                            <div class="item-meta">
+                                <button class="btn-claim" onclick="claimItem(8)">Claim</button>
+                                <button class="item-delete" onclick="deleteItem(8)">×</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personal Care -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>🧴 Personal Care</h3>
+                    <span class="item-count">2 items</span>
+                </div>
+                <div class="card-body">
+                    <div class="shopping-list">
+                        <div class="shopping-item">
+                            <div class="item-info">
+                                <input type="checkbox" class="item-checkbox" id="item9">
+                                <label for="item9" class="item-name">Toilet Paper (12-pack)</label>
+                            </div>
+                            <div class="item-meta">
+                                <button class="btn-claim" onclick="claimItem(9)">Claim</button>
+                                <button class="item-delete" onclick="deleteItem(9)">×</button>
+                            </div>
+                        </div>
+                        <div class="shopping-item">
+                            <div class="item-info">
+                                <input type="checkbox" class="item-checkbox" id="item10">
+                                <label for="item10" class="item-name">Hand Soap</label>
+                            </div>
+                            <div class="item-meta">
+                                <button class="btn-claim" onclick="claimItem(10)">Claim</button>
+                                <button class="item-delete" onclick="deleteItem(10)">×</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Item Modal -->
+    <div class="modal" id="addItemModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Shopping Item</h3>
+                <button class="modal-close" onclick="closeModal('addItemModal')">&times;</button>
+            </div>
+            <form class="modal-body" id="addItemForm">
+                <div class="form-group">
+                    <label for="itemName">Item Name *</label>
+                    <input type="text" id="itemName" required placeholder="e.g., Milk, Paper Towels">
+                </div>
+                <div class="form-group">
+                    <label for="itemQuantity">Quantity/Details</label>
+                    <input type="text" id="itemQuantity" placeholder="e.g., 2 gallons, 12-pack">
+                </div>
+                <div class="form-group">
+                    <label for="itemCategory">Category *</label>
+                    <select id="itemCategory" required>
+                        <option value="groceries">Groceries</option>
+                        <option value="household">Household Items</option>
+                        <option value="personal">Personal Care</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="itemClaimSelf">
+                        I'll buy this item
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('addItemModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Add to List</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="shopping.js"></script>
+</body>
+</html>

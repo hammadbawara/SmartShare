@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart-Share | Chore Schedule</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="chores.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Role Selector -->
+    <div class="role-selector">
+        <select id="roleSelect">
+            <option value="admin">House Admin</option>
+            <option value="roommate">Roommate</option>
+            <option value="landlord">Landlord</option>
+        </select>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2>🏠 Smart-Share</h2>
+        </div>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <span class="icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="finances.html" class="nav-item" data-role="admin,roommate">
+                <span class="icon">💰</span>
+                <span>Finances</span>
+            </a>
+            <a href="chores.html" class="nav-item active" data-role="admin,roommate">
+                <span class="icon">✓</span>
+                <span>Chores</span>
+            </a>
+            <a href="maintenance.html" class="nav-item" data-role="admin,roommate,landlord">
+                <span class="icon">🔧</span>
+                <span>Maintenance</span>
+            </a>
+            <a href="shopping.html" class="nav-item" data-role="admin,roommate">
+                <span class="icon">🛒</span>
+                <span>Shopping List</span>
+            </a>
+            <a href="users.html" class="nav-item" data-role="admin">
+                <span class="icon">👥</span>
+                <span>User Management</span>
+            </a>
+            <a href="announcements.html" class="nav-item" data-role="admin,roommate,landlord">
+                <span class="icon">📢</span>
+                <span>Announcements</span>
+            </a>
+            <a href="guest.html" class="nav-item guest-link">
+                <span class="icon">🔓</span>
+                <span>Guest View</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">JD</div>
+                <div class="user-details">
+                    <div class="user-name">John Doe</div>
+                    <div class="user-role" id="currentRole">Admin</div>
+                </div>
+            </div>
+            <button class="btn-icon" id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="page-header">
+            <div>
+                <h1>Chore Schedule</h1>
+                <p class="page-subtitle">Keep the house clean with rotating chore assignments</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-secondary" onclick="rotateChores()">🔄 Rotate Schedule</button>
+                <button class="btn-primary" onclick="openModal('addChoreModal')">+ Add Chore</button>
+                <button class="btn-menu" id="menuToggle">☰</button>
+            </div>
+        </header>
+
+        <!-- Chore Stats -->
+        <section class="chore-stats">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--success-light);">✓</div>
+                <div class="stat-content">
+                    <div class="stat-label">Completion Rate</div>
+                    <div class="stat-value">78%</div>
+                    <div class="progress-bar mt-1">
+                        <div class="progress-fill" style="width: 78%; background: var(--success);"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--warning-light);">⏰</div>
+                <div class="stat-content">
+                    <div class="stat-label">Your Pending Chores</div>
+                    <div class="stat-value">2</div>
+                    <div class="stat-change">Due today</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--info-light);">📅</div>
+                <div class="stat-content">
+                    <div class="stat-label">This Week</div>
+                    <div class="stat-value">12</div>
+                    <div class="stat-change">7 completed</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Options -->
+        <div class="filter-bar">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All Chores</button>
+                <button class="filter-tab" data-filter="mine">My Chores</button>
+                <button class="filter-tab" data-filter="pending">Pending</button>
+                <button class="filter-tab" data-filter="completed">Completed</button>
+            </div>
+        </div>
+
+        <!-- Weekly Chore Calendar -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Weekly Schedule</h3>
+                <div class="week-selector">
+                    <button class="btn-icon" onclick="previousWeek()">←</button>
+                    <span id="currentWeek">Nov 4 - Nov 10, 2025</span>
+                    <button class="btn-icon" onclick="nextWeek()">→</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chore-calendar">
+                    <!-- Monday -->
+                    <div class="day-column">
+                        <div class="day-header">
+                            <div class="day-name">Monday</div>
+                            <div class="day-date">Nov 4</div>
+                        </div>
+                        <div class="chore-card completed" data-chore-id="1">
+                            <div class="chore-checkbox">✓</div>
+                            <div class="chore-details">
+                                <div class="chore-title">Kitchen Cleanup</div>
+                                <div class="chore-assignee">
+                                    <div class="user-avatar small" style="background: var(--primary);">JD</div>
+                                    <span>John Doe</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chore-card" data-chore-id="2">
+                            <div class="chore-checkbox"></div>
+                            <div class="chore-details">
+                                <div class="chore-title">Living Room Vacuum</div>
+                                <div class="chore-assignee">
+                                    <div class="user-avatar small" style="background: var(--success);">SM</div>
+                                    <span>Sarah M.</span>
+                                </div>
+                            </div>
+                            <button class="chore-complete-btn" onclick="completeChore(2)">✓</button>
+                        </div>
+                    </div>
+
+                    <!-- Tuesday -->
+                    <div class="day-column">
+                        <div class="day-header">
+                            <div class="day-name">Tuesday</div>
+                            <div class="day-date">Nov 5</div>
+                        </div>
+                        <div class="chore-card" data-chore-id="3">
+                            <div class="chore-checkbox"></div>
+                            <div class="chore-details">
+                                <div class="chore-title">Bathroom Cleaning</div>
+                                <div class="chore-assignee">
+                                    <div class="user-avatar small" style="background: var(--warning);">MR</div>
+                                    <span>Mike R.</span>
+                                </div>
+                            </div>
+                            <button class="chore-complete-btn" onclick="completeChore(3)">✓</button>
+                        </div>
+                    </div>
+
+                    <!-- Wednesday -->
+                    <div class="day-column">
+                        <div class="day-header">
+                            <div class="day-name">Wednesday</div>
+                            <div class="day-date">Nov 6</div>
+                        </div>
+                        <div class="chore-card" data-chore-id="4">
+                            <div class="chore-checkbox"></div>
+                            <div class="chore-details">
+                                <div class="chore-title">Trash & Recycling</div>
+                                <div class="chore-assignee">
+                                    <div class="user-avatar small" style="background: var(--info);">EL</div>
+                                    <span>Emma L.</span>
+                                </div>
+                            </div>
+                            <button class="chore-complete-btn" onclick="completeChore(4)">✓</button>
+                        </div>
+                        <div class="chore-card" data-chore-id="5">
+                            <div class="chore-checkbox"></div>
+                            <div class="chore-details">
+                                <div class="chore-title">Mop Floors</div>
+                                <div class="chore-assignee">
+                                    <div class="user-avatar small" style="background: var(--primary);">JD</div>
+                                    <span>John Doe</span>
+                                </div>
+                            </div>
+                            <button class="chore-complete-btn" onclick="completeChore(5)">✓</button>
+                        </div>
+                    </div>
+
+                    <!-- Thursday -->
+                    <div class="day-column">
+                        <div class="day-header">
+                            <div class="day-name">Thursday</div>
+                            <div class="day-date">Nov 7</div>
+                        </div>
+                        <div class="chore-card" data-chore-id="6">
+                            <div class="chore-checkbox"></div>
+                            <div class="chore-details">
+                                <div class="chore-title">Wipe Counters</div>
+                                <div class="chore-assignee">
+                                    <div class="user-avatar small" style="background: var(--success);">SM</div>
+                                    <span>Sarah M.</span>
+                                </div>
+                            </div>
+                            <button class="chore-complete-btn" onclick="completeChore(6)">✓</button>
+                        </div>
+                    </div>
+
+                    <!-- Friday -->
+                    <div class="day-column">
+                        <div class="day-header">
+                            <div class="day-name">Friday</div>
+                            <div class="day-date">Nov 8</div>
+                        </div>
+                        <div class="chore-card" data-chore-id="7">
+                            <div class="chore-checkbox"></div>
+                            <div class="chore-details">
+                                <div class="chore-title">Refrigerator Cleanup</div>
+                                <div class="chore-assignee">
+                                    <div class="user-avatar small" style="background: var(--warning);">MR</div>
+                                    <span>Mike R.</span>
+                                </div>
+                            </div>
+                            <button class="chore-complete-btn" onclick="completeChore(7)">✓</button>
+                        </div>
+                        <div class="chore-card" data-chore-id="8">
+                            <div class="chore-checkbox"></div>
+                            <div class="chore-details">
+                                <div class="chore-title">Dust Furniture</div>
+                                <div class="chore-assignee">
+                                    <div class="user-avatar small" style="background: var(--info);">EL</div>
+                                    <span>Emma L.</span>
+                                </div>
+                            </div>
+                            <button class="chore-complete-btn" onclick="completeChore(8)">✓</button>
+                        </div>
+                    </div>
+
+                    <!-- Saturday -->
+                    <div class="day-column">
+                        <div class="day-header">
+                            <div class="day-name">Saturday</div>
+                            <div class="day-date">Nov 9</div>
+                        </div>
+                        <div class="chore-card" data-chore-id="9">
+                            <div class="chore-checkbox"></div>
+                            <div class="chore-details">
+                                <div class="chore-title">Deep Clean Kitchen</div>
+                                <div class="chore-assignee">
+                                    <div class="user-avatar small" style="background: var(--primary);">JD</div>
+                                    <span>John Doe</span>
+                                </div>
+                            </div>
+                            <button class="chore-complete-btn" onclick="completeChore(9)">✓</button>
+                        </div>
+                    </div>
+
+                    <!-- Sunday -->
+                    <div class="day-column">
+                        <div class="day-header">
+                            <div class="day-name">Sunday</div>
+                            <div class="day-date">Nov 10</div>
+                        </div>
+                        <div class="chore-card" data-chore-id="10">
+                            <div class="chore-checkbox"></div>
+                            <div class="chore-details">
+                                <div class="chore-title">Grocery Restocking</div>
+                                <div class="chore-assignee">
+                                    <div class="user-avatar small" style="background: var(--success);">SM</div>
+                                    <span>Sarah M.</span>
+                                </div>
+                            </div>
+                            <button class="chore-complete-btn" onclick="completeChore(10)">✓</button>
+                        </div>
+                        <div class="chore-card" data-chore-id="11">
+                            <div class="chore-checkbox"></div>
+                            <div class="chore-details">
+                                <div class="chore-title">Organize Common Area</div>
+                                <div class="chore-assignee">
+                                    <div class="user-avatar small" style="background: var(--warning);">MR</div>
+                                    <span>Mike R.</span>
+                                </div>
+                            </div>
+                            <button class="chore-complete-btn" onclick="completeChore(11)">✓</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Chore Modal -->
+    <div class="modal" id="addChoreModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Chore</h3>
+                <button class="modal-close" onclick="closeModal('addChoreModal')">&times;</button>
+            </div>
+            <form class="modal-body" id="addChoreForm">
+                <div class="form-group">
+                    <label for="choreName">Chore Name *</label>
+                    <input type="text" id="choreName" required placeholder="e.g., Clean Windows">
+                </div>
+                <div class="form-group">
+                    <label for="choreAssignee">Assign To *</label>
+                    <select id="choreAssignee" required>
+                        <option value="">Select Person</option>
+                        <option value="jd">John Doe</option>
+                        <option value="sm">Sarah Miller</option>
+                        <option value="mr">Mike Roberts</option>
+                        <option value="el">Emma Lee</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="choreDay">Day *</label>
+                    <select id="choreDay" required>
+                        <option value="">Select Day</option>
+                        <option value="monday">Monday</option>
+                        <option value="tuesday">Tuesday</option>
+                        <option value="wednesday">Wednesday</option>
+                        <option value="thursday">Thursday</option>
+                        <option value="friday">Friday</option>
+                        <option value="saturday">Saturday</option>
+                        <option value="sunday">Sunday</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="choreDescription">Description (Optional)</label>
+                    <textarea id="choreDescription" rows="3" placeholder="Additional details or instructions"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('addChoreModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Chore</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="chores.js"></script>
+</body>
+</html>

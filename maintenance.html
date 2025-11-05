@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart-Share | Maintenance</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="maintenance.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Role Selector -->
+    <div class="role-selector">
+        <select id="roleSelect">
+            <option value="admin">House Admin</option>
+            <option value="roommate">Roommate</option>
+            <option value="landlord">Landlord</option>
+        </select>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2>🏠 Smart-Share</h2>
+        </div>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <span class="icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="finances.html" class="nav-item" data-role="admin,roommate">
+                <span class="icon">💰</span>
+                <span>Finances</span>
+            </a>
+            <a href="chores.html" class="nav-item" data-role="admin,roommate">
+                <span class="icon">✓</span>
+                <span>Chores</span>
+            </a>
+            <a href="maintenance.html" class="nav-item active" data-role="admin,roommate,landlord">
+                <span class="icon">🔧</span>
+                <span>Maintenance</span>
+            </a>
+            <a href="shopping.html" class="nav-item" data-role="admin,roommate">
+                <span class="icon">🛒</span>
+                <span>Shopping List</span>
+            </a>
+            <a href="users.html" class="nav-item" data-role="admin">
+                <span class="icon">👥</span>
+                <span>User Management</span>
+            </a>
+            <a href="announcements.html" class="nav-item" data-role="admin,roommate,landlord">
+                <span class="icon">📢</span>
+                <span>Announcements</span>
+            </a>
+            <a href="guest.html" class="nav-item guest-link">
+                <span class="icon">🔓</span>
+                <span>Guest View</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">JD</div>
+                <div class="user-details">
+                    <div class="user-name">John Doe</div>
+                    <div class="user-role" id="currentRole">Admin</div>
+                </div>
+            </div>
+            <button class="btn-icon" id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="page-header">
+            <div>
+                <h1>Maintenance Requests</h1>
+                <p class="page-subtitle">Track and manage household maintenance issues</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary" onclick="openModal('newTicketModal')">+ New Request</button>
+                <button class="btn-menu" id="menuToggle">☰</button>
+            </div>
+        </header>
+
+        <!-- Ticket Stats -->
+        <section class="ticket-stats">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--info-light);">📥</div>
+                <div class="stat-content">
+                    <div class="stat-label">Open Tickets</div>
+                    <div class="stat-value">4</div>
+                    <div class="stat-change">2 received, 2 in progress</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--danger-light);">⚠️</div>
+                <div class="stat-content">
+                    <div class="stat-label">High Priority</div>
+                    <div class="stat-value">1</div>
+                    <div class="stat-change negative">Requires attention</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--success-light);">✓</div>
+                <div class="stat-content">
+                    <div class="stat-label">Resolved This Month</div>
+                    <div class="stat-value">8</div>
+                    <div class="stat-change positive">Avg. 3.5 days</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All</button>
+                <button class="filter-tab" data-filter="received">Received</button>
+                <button class="filter-tab" data-filter="in-progress">In Progress</button>
+                <button class="filter-tab" data-filter="completed">Completed</button>
+            </div>
+            <select class="filter-select">
+                <option>All Priorities</option>
+                <option>High Priority</option>
+                <option>Medium Priority</option>
+                <option>Low Priority</option>
+            </select>
+        </div>
+
+        <!-- Tickets List -->
+        <div class="tickets-grid">
+            <!-- Ticket 1 -->
+            <div class="ticket-card" data-status="in-progress" data-priority="high">
+                <div class="ticket-card-header">
+                    <div class="ticket-number">#1024</div>
+                    <span class="priority-badge high">High Priority</span>
+                </div>
+                <h3 class="ticket-card-title">Leaking Kitchen Faucet</h3>
+                <p class="ticket-description">Water is dripping constantly from the kitchen sink faucet. The leak started yesterday and is getting worse.</p>
+                <div class="ticket-meta-row">
+                    <div class="ticket-submitter">
+                        <div class="user-avatar small" style="background: var(--success);">SM</div>
+                        <span>Sarah Miller</span>
+                    </div>
+                    <div class="ticket-date">Nov 2, 2025</div>
+                </div>
+                <div class="ticket-status-section">
+                    <div class="status-label">
+                        <span class="ticket-status in-progress">In Progress</span>
+                        <span class="status-text">Plumber scheduled</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%;"></div>
+                    </div>
+                </div>
+                <div class="ticket-actions">
+                    <button class="btn-small btn-secondary" onclick="viewTicketDetails(1024)">View Details</button>
+                    <button class="btn-small btn-primary" onclick="updateTicketStatus(1024)">Update Status</button>
+                </div>
+            </div>
+
+            <!-- Ticket 2 -->
+            <div class="ticket-card" data-status="received" data-priority="medium">
+                <div class="ticket-card-header">
+                    <div class="ticket-number">#1023</div>
+                    <span class="priority-badge medium">Medium Priority</span>
+                </div>
+                <h3 class="ticket-card-title">Broken Door Lock</h3>
+                <p class="ticket-description">The front door lock is sticky and hard to turn. Sometimes it takes several tries to unlock.</p>
+                <div class="ticket-meta-row">
+                    <div class="ticket-submitter">
+                        <div class="user-avatar small" style="background: var(--warning);">MR</div>
+                        <span>Mike Roberts</span>
+                    </div>
+                    <div class="ticket-date">Nov 1, 2025</div>
+                </div>
+                <div class="ticket-status-section">
+                    <div class="status-label">
+                        <span class="ticket-status received">Received</span>
+                        <span class="status-text">Awaiting landlord response</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 20%;"></div>
+                    </div>
+                </div>
+                <div class="ticket-actions">
+                    <button class="btn-small btn-secondary" onclick="viewTicketDetails(1023)">View Details</button>
+                    <button class="btn-small btn-primary" onclick="updateTicketStatus(1023)">Update Status</button>
+                </div>
+            </div>
+
+            <!-- Ticket 3 -->
+            <div class="ticket-card" data-status="in-progress" data-priority="low">
+                <div class="ticket-card-header">
+                    <div class="ticket-number">#1022</div>
+                    <span class="priority-badge low">Low Priority</span>
+                </div>
+                <h3 class="ticket-card-title">Squeaky Bedroom Door</h3>
+                <p class="ticket-description">My bedroom door makes a loud squeaking noise when opened. Need WD-40 or hinge replacement.</p>
+                <div class="ticket-meta-row">
+                    <div class="ticket-submitter">
+                        <div class="user-avatar small" style="background: var(--info);">EL</div>
+                        <span>Emma Lee</span>
+                    </div>
+                    <div class="ticket-date">Oct 30, 2025</div>
+                </div>
+                <div class="ticket-status-section">
+                    <div class="status-label">
+                        <span class="ticket-status in-progress">In Progress</span>
+                        <span class="status-text">Parts ordered</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 40%;"></div>
+                    </div>
+                </div>
+                <div class="ticket-actions">
+                    <button class="btn-small btn-secondary" onclick="viewTicketDetails(1022)">View Details</button>
+                    <button class="btn-small btn-primary" onclick="updateTicketStatus(1022)">Update Status</button>
+                </div>
+            </div>
+
+            <!-- Ticket 4 -->
+            <div class="ticket-card" data-status="completed" data-priority="medium">
+                <div class="ticket-card-header">
+                    <div class="ticket-number">#1021</div>
+                    <span class="priority-badge medium">Medium Priority</span>
+                </div>
+                <h3 class="ticket-card-title">Clogged Bathroom Drain</h3>
+                <p class="ticket-description">Shower drain is draining very slowly. Water pools during showers.</p>
+                <div class="ticket-meta-row">
+                    <div class="ticket-submitter">
+                        <div class="user-avatar small" style="background: var(--primary);">JD</div>
+                        <span>John Doe</span>
+                    </div>
+                    <div class="ticket-date">Oct 28, 2025</div>
+                </div>
+                <div class="ticket-status-section">
+                    <div class="status-label">
+                        <span class="ticket-status completed">Completed</span>
+                        <span class="status-text">Resolved Nov 3, 2025</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%; background: var(--success);"></div>
+                    </div>
+                </div>
+                <div class="ticket-actions">
+                    <button class="btn-small btn-secondary" onclick="viewTicketDetails(1021)">View Details</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- New Ticket Modal -->
+    <div class="modal" id="newTicketModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Submit Maintenance Request</h3>
+                <button class="modal-close" onclick="closeModal('newTicketModal')">&times;</button>
+            </div>
+            <form class="modal-body" id="newTicketForm">
+                <div class="form-group">
+                    <label for="ticketTitle">Issue Title *</label>
+                    <input type="text" id="ticketTitle" required placeholder="Brief description of the issue">
+                </div>
+                <div class="form-group">
+                    <label for="ticketDescription">Detailed Description *</label>
+                    <textarea id="ticketDescription" rows="4" required placeholder="Provide more details about the issue"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="ticketCategory">Category *</label>
+                    <select id="ticketCategory" required>
+                        <option value="">Select category</option>
+                        <option value="plumbing">Plumbing</option>
+                        <option value="electrical">Electrical</option>
+                        <option value="heating">Heating/Cooling</option>
+                        <option value="appliance">Appliance</option>
+                        <option value="structural">Structural</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ticketPriority">Priority *</label>
+                    <select id="ticketPriority" required>
+                        <option value="low">Low - Can wait a week</option>
+                        <option value="medium" selected>Medium - Should be fixed soon</option>
+                        <option value="high">High - Needs immediate attention</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ticketPhoto">Upload Photo (Optional)</label>
+                    <input type="file" id="ticketPhoto" accept="image/*" multiple>
+                    <small>You can upload multiple photos (max 5MB each)</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('newTicketModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Submit Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Update Status Modal -->
+    <div class="modal" id="updateStatusModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Update Ticket Status</h3>
+                <button class="modal-close" onclick="closeModal('updateStatusModal')">&times;</button>
+            </div>
+            <form class="modal-body" id="updateStatusForm">
+                <div class="form-group">
+                    <label for="newStatus">New Status *</label>
+                    <select id="newStatus" required>
+                        <option value="received">Received</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="statusNote">Add Note</label>
+                    <textarea id="statusNote" rows="3" placeholder="Provide update details..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('updateStatusModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Update Status</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="maintenance.js"></script>
+</body>
+</html>
