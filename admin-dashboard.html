@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Smart-Share</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1 class="app-title">🏠 Smart-Share</h1>
+                    <span class="subtitle">Admin Dashboard</span>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <span class="user-name" id="userName">Ahmed Khan</span>
+                        <span class="user-role admin-badge">House Admin</span>
+                    </div>
+                    <button class="logout-btn" onclick="handleLogout()">🚪 Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="navigation">
+            <a href="admin-dashboard.html" class="nav-link active">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a href="finances.html" class="nav-link">
+                <span class="nav-icon">💰</span>
+                <span class="nav-text">Finances</span>
+            </a>
+            <a href="chores.html" class="nav-link">
+                <span class="nav-icon">🧹</span>
+                <span class="nav-text">Chores</span>
+            </a>
+            <a href="maintenance.html" class="nav-link">
+                <span class="nav-icon">🔧</span>
+                <span class="nav-text">Maintenance</span>
+            </a>
+            <a href="shopping.html" class="nav-link">
+                <span class="nav-icon">🛒</span>
+                <span class="nav-text">Shopping</span>
+            </a>
+            <a href="users.html" class="nav-link">
+                <span class="nav-icon">👥</span>
+                <span class="nav-text">Users</span>
+            </a>
+            <a href="announcements.html" class="nav-link">
+                <span class="nav-icon">📢</span>
+                <span class="nav-text">Announcements</span>
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-card">
+                    <h2>Assalam-o-Alaikum, Ahmed! 🌟</h2>
+                    <p>Welcome to your Smart-Share admin dashboard. Here's what's happening in your household.</p>
+                    <p class="current-date" id="currentDate"></p>
+                </div>
+            </section>
+
+            <!-- Quick Stats -->
+            <section class="stats-grid">
+                <div class="stat-card green">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <h3>Monthly Expenses</h3>
+                        <p class="stat-value">PKR 53,100</p>
+                        <p class="stat-change positive">+PKR 2,300 from last month</p>
+                    </div>
+                </div>
+
+                <div class="stat-card blue">
+                    <div class="stat-icon">🧹</div>
+                    <div class="stat-info">
+                        <h3>Pending Chores</h3>
+                        <p class="stat-value">3 Tasks</p>
+                        <p class="stat-change">2 due today</p>
+                    </div>
+                </div>
+
+                <div class="stat-card orange">
+                    <div class="stat-icon">🔧</div>
+                    <div class="stat-info">
+                        <h3>Maintenance Issues</h3>
+                        <p class="stat-value">2 Open</p>
+                        <p class="stat-change">1 in progress</p>
+                    </div>
+                </div>
+
+                <div class="stat-card purple">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <h3>Active Members</h3>
+                        <p class="stat-value">4 People</p>
+                        <p class="stat-change">All paid this month</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Two Column Layout -->
+            <div class="two-column-layout">
+                <!-- Left Column -->
+                <div class="left-column">
+                    <!-- Recent Finances -->
+                    <section class="dashboard-card">
+                        <div class="card-header">
+                            <h3>💰 Recent Finances</h3>
+                            <a href="finances.html" class="view-all-link">View All →</a>
+                        </div>
+                        <div class="finance-list">
+                            <div class="finance-item">
+                                <div class="finance-info">
+                                    <span class="finance-category expense">🏠 Rent</span>
+                                    <span class="finance-date">December 1, 2025</span>
+                                </div>
+                                <span class="finance-amount expense">-PKR 45,000</span>
+                            </div>
+                            <div class="finance-item">
+                                <div class="finance-info">
+                                    <span class="finance-category expense">⚡ Electricity</span>
+                                    <span class="finance-date">November 28, 2025</span>
+                                </div>
+                                <span class="finance-amount expense">-PKR 3,500</span>
+                            </div>
+                            <div class="finance-item">
+                                <div class="finance-info">
+                                    <span class="finance-category expense">🌐 Internet</span>
+                                    <span class="finance-date">November 25, 2025</span>
+                                </div>
+                                <span class="finance-amount expense">-PKR 2,000</span>
+                            </div>
+                            <div class="finance-item">
+                                <div class="finance-info">
+                                    <span class="finance-category expense">🔥 Gas Bill</span>
+                                    <span class="finance-date">November 22, 2025</span>
+                                </div>
+                                <span class="finance-amount expense">-PKR 1,800</span>
+                            </div>
+                            <div class="finance-item">
+                                <div class="finance-info">
+                                    <span class="finance-category expense">💧 Water</span>
+                                    <span class="finance-date">November 20, 2025</span>
+                                </div>
+                                <span class="finance-amount expense">-PKR 800</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Chores Status -->
+                    <section class="dashboard-card">
+                        <div class="card-header">
+                            <h3>🧹 Today's Chores</h3>
+                            <a href="chores.html" class="view-all-link">View All →</a>
+                        </div>
+                        <div class="chores-list">
+                            <div class="chore-item pending">
+                                <div class="chore-checkbox">
+                                    <input type="checkbox" id="chore1">
+                                    <label for="chore1"></label>
+                                </div>
+                                <div class="chore-details">
+                                    <h4>Bartan Dhona (Wash Dishes)</h4>
+                                    <p>Assigned to: <strong>Hassan Ali</strong> • Due: Today 8:00 PM</p>
+                                </div>
+                            </div>
+                            <div class="chore-item pending">
+                                <div class="chore-checkbox">
+                                    <input type="checkbox" id="chore2">
+                                    <label for="chore2"></label>
+                                </div>
+                                <div class="chore-details">
+                                    <h4>Jhadu Lagana (Sweep Floor)</h4>
+                                    <p>Assigned to: <strong>Fatima Noor</strong> • Due: Today 6:00 PM</p>
+                                </div>
+                            </div>
+                            <div class="chore-item completed">
+                                <div class="chore-checkbox">
+                                    <input type="checkbox" id="chore3" checked>
+                                    <label for="chore3"></label>
+                                </div>
+                                <div class="chore-details">
+                                    <h4>Safai Karna (Clean Kitchen)</h4>
+                                    <p>Completed by: <strong>Ahmed Khan</strong> • Today 2:30 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Right Column -->
+                <div class="right-column">
+                    <!-- Maintenance Issues -->
+                    <section class="dashboard-card">
+                        <div class="card-header">
+                            <h3>🔧 Active Maintenance</h3>
+                            <a href="maintenance.html" class="view-all-link">View All →</a>
+                        </div>
+                        <div class="maintenance-list">
+                            <div class="maintenance-item priority-high">
+                                <div class="maintenance-header">
+                                    <span class="priority-badge high">High Priority</span>
+                                    <span class="status-badge in-progress">In Progress</span>
+                                </div>
+                                <h4>Load Shedding UPS Issue</h4>
+                                <p>The UPS battery is not holding charge properly. Assigned to Usman Electrician.</p>
+                                <div class="maintenance-footer">
+                                    <span>🏷️ Electrical</span>
+                                    <span>📅 Reported 2 days ago</span>
+                                </div>
+                            </div>
+                            <div class="maintenance-item priority-medium">
+                                <div class="maintenance-header">
+                                    <span class="priority-badge medium">Medium</span>
+                                    <span class="status-badge open">Open</span>
+                                </div>
+                                <h4>Gas Leakage Check</h4>
+                                <p>Smell of gas in kitchen area. Needs immediate inspection by SSGC technician.</p>
+                                <div class="maintenance-footer">
+                                    <span>🏷️ Plumbing</span>
+                                    <span>📅 Reported today</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Shopping List -->
+                    <section class="dashboard-card">
+                        <div class="card-header">
+                            <h3>🛒 Shopping List</h3>
+                            <a href="shopping.html" class="view-all-link">View All →</a>
+                        </div>
+                        <div class="shopping-list">
+                            <div class="shopping-item">
+                                <span class="item-name">🍚 Chawal (Rice) - 5kg</span>
+                                <span class="item-price">PKR 600</span>
+                            </div>
+                            <div class="shopping-item">
+                                <span class="item-name">🥔 Atta (Flour) - 10kg</span>
+                                <span class="item-price">PKR 850</span>
+                            </div>
+                            <div class="shopping-item">
+                                <span class="item-name">🫘 Daal (Lentils) - 2kg</span>
+                                <span class="item-price">PKR 420</span>
+                            </div>
+                            <div class="shopping-item">
+                                <span class="item-name">🧴 Dish Soap</span>
+                                <span class="item-price">PKR 150</span>
+                            </div>
+                            <div class="shopping-item">
+                                <span class="item-name">🧻 Tissue Roll (Pack of 6)</span>
+                                <span class="item-price">PKR 300</span>
+                            </div>
+                        </div>
+                        <div class="shopping-total">
+                            <strong>Estimated Total:</strong>
+                            <strong>PKR 2,320</strong>
+                        </div>
+                    </section>
+
+                    <!-- Recent Announcements -->
+                    <section class="dashboard-card">
+                        <div class="card-header">
+                            <h3>📢 Announcements</h3>
+                            <a href="announcements.html" class="view-all-link">View All →</a>
+                        </div>
+                        <div class="announcements-list">
+                            <div class="announcement-item">
+                                <div class="announcement-header">
+                                    <span class="announcement-type important">⚠️ Important</span>
+                                    <span class="announcement-date">Today</span>
+                                </div>
+                                <h4>Electricity Bill Due - Dec 5</h4>
+                                <p>Monthly electricity bill of PKR 3,500 is due. Please submit your share (PKR 875) by December 5th.</p>
+                            </div>
+                            <div class="announcement-item">
+                                <div class="announcement-header">
+                                    <span class="announcement-type general">ℹ️ General</span>
+                                    <span class="announcement-date">Yesterday</span>
+                                </div>
+                                <h4>House Meeting - Friday 8 PM</h4>
+                                <p>Monthly house meeting scheduled for this Friday at 8 PM. Please attend to discuss household matters.</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Check authentication
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+        if (!currentUser.username || currentUser.role !== 'admin') {
+            window.location.href = 'login.html';
+        }
+
+        // Update user name
+        document.getElementById('userName').textContent = currentUser.fullName || 'Admin';
+
+        // Display current date
+        const currentDate = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = currentDate.toLocaleDateString('en-PK', options);
+
+        // Logout function
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landlord Dashboard - Smart-Share</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1 class="app-title">🏠 Smart-Share</h1>
+                    <span class="subtitle">Landlord Portal</span>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <span class="user-name" id="userName">Malik Tariq</span>
+                        <span class="user-role landlord-badge">Landlord</span>
+                    </div>
+                    <button class="logout-btn" onclick="handleLogout()">🚪 Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation (Very Limited for Landlord) -->
+        <nav class="navigation">
+            <a href="landlord-dashboard.html" class="nav-link active">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a href="maintenance.html" class="nav-link">
+                <span class="nav-icon">🔧</span>
+                <span class="nav-text">Maintenance</span>
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-card">
+                    <h2>السلام علیکم، Malik Sahib! 🏢</h2>
+                    <p>Welcome to your Smart-Share landlord portal. Monitor rent payments and property maintenance.</p>
+                    <p class="current-date" id="currentDate"></p>
+                </div>
+            </section>
+
+            <!-- Quick Stats (Landlord-specific) -->
+            <section class="stats-grid">
+                <div class="stat-card green">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <h3>Monthly Rent</h3>
+                        <p class="stat-value">PKR 45,000</p>
+                        <p class="stat-change positive">Received ✅</p>
+                    </div>
+                </div>
+
+                <div class="stat-card blue">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-info">
+                        <h3>Next Payment Due</h3>
+                        <p class="stat-value">Jan 1, 2026</p>
+                        <p class="stat-change">30 days remaining</p>
+                    </div>
+                </div>
+
+                <div class="stat-card orange">
+                    <div class="stat-icon">🔧</div>
+                    <div class="stat-info">
+                        <h3>Maintenance Issues</h3>
+                        <p class="stat-value">2 Active</p>
+                        <p class="stat-change">1 requires attention</p>
+                    </div>
+                </div>
+
+                <div class="stat-card purple">
+                    <div class="stat-icon">🏠</div>
+                    <div class="stat-info">
+                        <h3>Property Status</h3>
+                        <p class="stat-value">Occupied</p>
+                        <p class="stat-change">4 tenants</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Two Column Layout -->
+            <div class="two-column-layout">
+                <!-- Left Column -->
+                <div class="left-column">
+                    <!-- Rent Payment History -->
+                    <section class="dashboard-card">
+                        <div class="card-header">
+                            <h3>💰 Rent Payment History</h3>
+                        </div>
+                        <div class="rent-history">
+                            <div class="rent-item paid">
+                                <div class="rent-info">
+                                    <div class="rent-month">
+                                        <h4>December 2025</h4>
+                                        <span class="rent-date">Received on: Dec 1, 2025</span>
+                                    </div>
+                                    <span class="payment-status paid-badge">✅ Paid</span>
+                                </div>
+                                <div class="rent-amount">PKR 45,000</div>
+                            </div>
+                            <div class="rent-item paid">
+                                <div class="rent-info">
+                                    <div class="rent-month">
+                                        <h4>November 2025</h4>
+                                        <span class="rent-date">Received on: Nov 1, 2025</span>
+                                    </div>
+                                    <span class="payment-status paid-badge">✅ Paid</span>
+                                </div>
+                                <div class="rent-amount">PKR 45,000</div>
+                            </div>
+                            <div class="rent-item paid">
+                                <div class="rent-info">
+                                    <div class="rent-month">
+                                        <h4>October 2025</h4>
+                                        <span class="rent-date">Received on: Oct 2, 2025</span>
+                                    </div>
+                                    <span class="payment-status paid-badge">✅ Paid</span>
+                                </div>
+                                <div class="rent-amount">PKR 45,000</div>
+                            </div>
+                            <div class="rent-item paid">
+                                <div class="rent-info">
+                                    <div class="rent-month">
+                                        <h4>September 2025</h4>
+                                        <span class="rent-date">Received on: Sep 1, 2025</span>
+                                    </div>
+                                    <span class="payment-status paid-badge">✅ Paid</span>
+                                </div>
+                                <div class="rent-amount">PKR 45,000</div>
+                            </div>
+                            <div class="rent-item paid">
+                                <div class="rent-info">
+                                    <div class="rent-month">
+                                        <h4>August 2025</h4>
+                                        <span class="rent-date">Received on: Aug 3, 2025</span>
+                                    </div>
+                                    <span class="payment-status paid-badge">✅ Paid</span>
+                                </div>
+                                <div class="rent-amount">PKR 45,000</div>
+                            </div>
+                        </div>
+                        <div class="rent-summary">
+                            <div class="summary-row">
+                                <span>Total Received (Last 6 Months):</span>
+                                <strong class="amount-highlight">PKR 270,000</strong>
+                            </div>
+                            <div class="summary-row">
+                                <span>Payment Reliability:</span>
+                                <strong class="reliability-excellent">⭐ Excellent</strong>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Property Details -->
+                    <section class="dashboard-card">
+                        <div class="card-header">
+                            <h3>🏠 Property Information</h3>
+                        </div>
+                        <div class="property-details">
+                            <div class="property-row">
+                                <span class="property-label">📍 Address:</span>
+                                <span class="property-value">House #12, Street 5, F-10/3, Islamabad</span>
+                            </div>
+                            <div class="property-row">
+                                <span class="property-label">🏗️ Property Type:</span>
+                                <span class="property-value">3 Bedroom House</span>
+                            </div>
+                            <div class="property-row">
+                                <span class="property-label">📏 Area:</span>
+                                <span class="property-value">2,500 sq ft</span>
+                            </div>
+                            <div class="property-row">
+                                <span class="property-label">👥 Current Tenants:</span>
+                                <span class="property-value">4 Occupants</span>
+                            </div>
+                            <div class="property-row">
+                                <span class="property-label">📅 Lease Start:</span>
+                                <span class="property-value">January 1, 2025</span>
+                            </div>
+                            <div class="property-row">
+                                <span class="property-label">📅 Lease End:</span>
+                                <span class="property-value">December 31, 2025</span>
+                            </div>
+                            <div class="property-row">
+                                <span class="property-label">💰 Monthly Rent:</span>
+                                <span class="property-value">PKR 45,000</span>
+                            </div>
+                            <div class="property-row">
+                                <span class="property-label">💵 Security Deposit:</span>
+                                <span class="property-value">PKR 90,000 (Held)</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Right Column -->
+                <div class="right-column">
+                    <!-- Maintenance Issues -->
+                    <section class="dashboard-card">
+                        <div class="card-header">
+                            <h3>🔧 Property Maintenance</h3>
+                            <a href="maintenance.html" class="view-all-link">View All →</a>
+                        </div>
+                        <div class="maintenance-list">
+                            <div class="maintenance-item priority-high">
+                                <div class="maintenance-header">
+                                    <span class="priority-badge high">High Priority</span>
+                                    <span class="status-badge in-progress">In Progress</span>
+                                </div>
+                                <h4>Load Shedding UPS Issue</h4>
+                                <p>The UPS battery is not holding charge properly. Electrician Usman is working on it.</p>
+                                <div class="maintenance-footer">
+                                    <span>🏷️ Electrical</span>
+                                    <span>📅 Reported 2 days ago</span>
+                                </div>
+                                <div class="maintenance-action">
+                                    <p class="action-note">⚠️ May require landlord approval for battery replacement (est. PKR 15,000)</p>
+                                </div>
+                            </div>
+                            <div class="maintenance-item priority-medium">
+                                <div class="maintenance-header">
+                                    <span class="priority-badge medium">Medium</span>
+                                    <span class="status-badge open">Open</span>
+                                </div>
+                                <h4>Gas Leakage Check Required</h4>
+                                <p>Minor smell of gas detected in kitchen. SSGC technician visit requested.</p>
+                                <div class="maintenance-footer">
+                                    <span>🏷️ Plumbing/Gas</span>
+                                    <span>📅 Reported today</span>
+                                </div>
+                                <div class="maintenance-action">
+                                    <p class="action-note">ℹ️ Routine inspection - no cost expected</p>
+                                </div>
+                            </div>
+                            <div class="maintenance-item priority-low">
+                                <div class="maintenance-header">
+                                    <span class="priority-badge low">Low</span>
+                                    <span class="status-badge completed">Completed</span>
+                                </div>
+                                <h4>Bathroom Tap Repair</h4>
+                                <p>Leaking tap in guest bathroom has been fixed.</p>
+                                <div class="maintenance-footer">
+                                    <span>🏷️ Plumbing</span>
+                                    <span>📅 Completed 1 week ago</span>
+                                </div>
+                                <div class="maintenance-cost">
+                                    <span>💰 Cost: PKR 800</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tenant Information -->
+                    <section class="dashboard-card">
+                        <div class="card-header">
+                            <h3>👥 Current Tenants</h3>
+                        </div>
+                        <div class="tenants-list">
+                            <div class="tenant-card">
+                                <div class="tenant-avatar admin">A</div>
+                                <div class="tenant-info">
+                                    <h4>Ahmed Khan</h4>
+                                    <span class="tenant-role">Primary Contact</span>
+                                    <span class="tenant-phone">📞 0300-1234567</span>
+                                </div>
+                            </div>
+                            <div class="tenant-card">
+                                <div class="tenant-avatar roommate">H</div>
+                                <div class="tenant-info">
+                                    <h4>Hassan Ali</h4>
+                                    <span class="tenant-role">Tenant</span>
+                                    <span class="tenant-phone">📞 0301-2345678</span>
+                                </div>
+                            </div>
+                            <div class="tenant-card">
+                                <div class="tenant-avatar roommate">F</div>
+                                <div class="tenant-info">
+                                    <h4>Fatima Noor</h4>
+                                    <span class="tenant-role">Tenant</span>
+                                    <span class="tenant-phone">📞 0302-3456789</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Quick Actions -->
+                    <section class="dashboard-card">
+                        <div class="card-header">
+                            <h3>⚡ Quick Actions</h3>
+                        </div>
+                        <div class="quick-actions">
+                            <button class="action-btn" onclick="window.location.href='maintenance.html'">
+                                <span class="action-icon">🔧</span>
+                                <span class="action-text">View All Maintenance</span>
+                            </button>
+                            <button class="action-btn" onclick="contactTenant()">
+                                <span class="action-icon">📞</span>
+                                <span class="action-text">Contact Primary Tenant</span>
+                            </button>
+                            <button class="action-btn" onclick="viewLease()">
+                                <span class="action-icon">📄</span>
+                                <span class="action-text">View Lease Agreement</span>
+                            </button>
+                        </div>
+                    </section>
+
+                    <!-- Important Notes -->
+                    <section class="dashboard-card info-card">
+                        <div class="card-header">
+                            <h3>ℹ️ Important Information</h3>
+                        </div>
+                        <div class="info-content">
+                            <p><strong>Payment Method:</strong> Bank transfer to Malik Tariq's account</p>
+                            <p><strong>Payment Due Date:</strong> 1st of each month</p>
+                            <p><strong>Lease Renewal:</strong> Discuss 60 days before expiry (Nov 1, 2025)</p>
+                            <p><strong>Emergency Contact:</strong> 0333-9876543 (Available 24/7)</p>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Check authentication
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+        if (!currentUser.username || currentUser.role !== 'landlord') {
+            window.location.href = 'login.html';
+        }
+
+        // Update user name
+        document.getElementById('userName').textContent = currentUser.fullName || 'Landlord';
+
+        // Display current date
+        const currentDate = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = currentDate.toLocaleDateString('en-PK', options);
+
+        // Logout function
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Quick action functions
+        function contactTenant() {
+            alert('📞 Contacting Ahmed Khan...\n\nPhone: 0300-1234567\nEmail: ahmed.khan@example.com');
+        }
+
+        function viewLease() {
+            alert('📄 Lease Agreement\n\nThis would open the lease document in a real application.');
+        }
+    </script>
+</body>
+</html>
