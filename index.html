@@ -59,12 +59,15 @@
             </a>
         </nav>
         <div class="sidebar-footer">
-            <div class="user-info">
+            <div class="user-info" id="userInfoSection" style="cursor: pointer;">
                 <div class="user-avatar">JD</div>
                 <div class="user-details">
                     <div class="user-name">John Doe</div>
                     <div class="user-role" id="currentRole">Admin</div>
                 </div>
+            </div>
+            <div class="logout-dropdown" id="logoutDropdown" style="display: none;">
+                <button class="logout-btn-sidebar" onclick="confirmLogout()">🚪 Logout</button>
             </div>
             <button class="btn-icon" id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
         </div>
@@ -325,6 +328,33 @@
                 window.location.href = 'login.html';
             }
         })();
+
+        // Logout functionality (only if user is somehow on this page)
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+        if (currentUser.username) {
+            // Toggle logout dropdown
+            document.getElementById('userInfoSection').addEventListener('click', function(e) {
+                e.stopPropagation();
+                const dropdown = document.getElementById('logoutDropdown');
+                dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                const dropdown = document.getElementById('logoutDropdown');
+                if (dropdown && !event.target.closest('#userInfoSection') && !event.target.closest('#logoutDropdown')) {
+                    dropdown.style.display = 'none';
+                }
+            });
+
+            // Logout function with confirmation
+            function confirmLogout() {
+                if (confirm('Are you sure you want to logout?')) {
+                    sessionStorage.removeItem('currentUser');
+                    window.location.href = 'login.html';
+                }
+            }
+        }
     </script>
 </body>
 </html>
