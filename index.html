@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart-Share | Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -27,33 +27,33 @@
                 <span class="icon">📊</span>
                 <span>Dashboard</span>
             </a>
-            <a href="finances.html" class="nav-item" data-role="admin,roommate">
+            <a href="pages/finances.html" class="nav-item" data-role="admin,roommate">
                 <span class="icon">💰</span>
                 <span>Finances</span>
                 <span class="badge">3</span>
             </a>
-            <a href="chores.html" class="nav-item" data-role="admin,roommate">
+            <a href="pages/chores.html" class="nav-item" data-role="admin,roommate">
                 <span class="icon">✓</span>
                 <span>Chores</span>
             </a>
-            <a href="maintenance.html" class="nav-item" data-role="admin,roommate,landlord">
+            <a href="pages/maintenance.html" class="nav-item" data-role="admin,roommate,landlord">
                 <span class="icon">🔧</span>
                 <span>Maintenance</span>
                 <span class="badge badge-alert">2</span>
             </a>
-            <a href="shopping.html" class="nav-item" data-role="admin,roommate">
+            <a href="pages/shopping.html" class="nav-item" data-role="admin,roommate">
                 <span class="icon">🛒</span>
                 <span>Shopping List</span>
             </a>
-            <a href="users.html" class="nav-item" data-role="admin">
+            <a href="pages/users.html" class="nav-item" data-role="admin">
                 <span class="icon">👥</span>
                 <span>User Management</span>
             </a>
-            <a href="announcements.html" class="nav-item" data-role="admin,roommate,landlord">
+            <a href="pages/announcements.html" class="nav-item" data-role="admin,roommate,landlord">
                 <span class="icon">📢</span>
                 <span>Announcements</span>
             </a>
-            <a href="guest.html" class="nav-item guest-link">
+            <a href="pages/guest.html" class="nav-item guest-link">
                 <span class="icon">🔓</span>
                 <span>Guest View</span>
             </a>
@@ -125,7 +125,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3>Bills Due Soon</h3>
-                    <a href="finances.html" class="link">View All →</a>
+                    <a href="pages/finances.html" class="link">View All →</a>
                 </div>
                 <div class="card-body">
                     <div class="bill-item">
@@ -165,7 +165,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3>Your Chores Today</h3>
-                    <a href="chores.html" class="link">View Schedule →</a>
+                    <a href="pages/chores.html" class="link">View Schedule →</a>
                 </div>
                 <div class="card-body">
                     <div class="chore-item completed">
@@ -314,7 +314,7 @@
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <script src="js/app.js"></script>
     <script>
         // Auto-redirect to appropriate dashboard based on login
         (function() {
