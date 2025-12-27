@@ -1,53 +1,57 @@
 // ===== LOGIN PAGE JAVASCRIPT =====
 
-// Mock user database
-const users = {
+// API Configuration
+const API_BASE_URL = window.location.origin + '/backend/api';
+
+// Demo credentials for display (passwords are in database)
+const demoCredentials = {
     admin: {
-        username: 'ahmed',
-        password: 'admin123',
+        username: 'admin',
+        password: 'password123',
         role: 'admin',
-        fullName: 'Ahmed Khan',
-        dashboard: 'admin-dashboard.html'
+        fullName: 'Ahmed Ali'
     },
-    hassan: {
-        username: 'hassan',
-        password: 'room123',
+    roommate1: {
+        username: 'roommate1',
+        password: 'password123',
         role: 'roommate',
-        fullName: 'Hassan Ali',
-        roommateName: 'hassan',
-        dashboard: 'roommate-dashboard.html'
+        fullName: 'Hassan Khan'
     },
-    fatima: {
-        username: 'fatima',
-        password: 'room123',
+    roommate2: {
+        username: 'roommate2',
+        password: 'password123',
         role: 'roommate',
-        fullName: 'Fatima Noor',
-        roommateName: 'fatima',
-        dashboard: 'roommate-dashboard.html'
+        fullName: 'Fatima Noor'
     },
     landlord: {
-        username: 'malik',
-        password: 'land123',
+        username: 'landlord',
+        password: 'password123',
         role: 'landlord',
-        fullName: 'Malik Tariq',
-        dashboard: 'landlord-dashboard.html'
+        fullName: 'Malik Ahmed'
     },
     maintenance: {
-        username: 'usman',
-        password: 'maint123',
+        username: 'maintenance',
+        password: 'password123',
         role: 'maintenance',
-        fullName: 'Usman Electrician',
-        dashboard: 'maintenance-dashboard.html'
+        fullName: 'Usman Tariq'
     }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     // Check if already logged in
-    const currentUser = sessionStorage.getItem('currentUser');
-    if (currentUser) {
-        const userData = JSON.parse(currentUser);
-        window.location.href = userData.dashboard;
-        return;
+    try {
+        const sessionResponse = await fetch(`${API_BASE_URL}/auth/session.php`, {
+            credentials: 'include'
+        });
+        const sessionData = await sessionResponse.json();
+        
+        if (sessionData.success && sessionData.data.authenticated) {
+            // User is already logged in, redirect to appropriate dashboard
+            window.location.href = getDashboardUrl(sessionData.data.user.role);
+            return;
+        }
+    } catch (error) {
+        console.log('Not logged in or session check failed');
     }
     
     setupLoginForm();
@@ -57,42 +61,20 @@ document.addEventListener('DOMContentLoaded', function() {
 function setupLoginForm() {
     const form = document.getElementById('loginForm');
     
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        handleLogin();
+        await handleLogin();
     });
 }
 
-function handleLogin() {
-    const username = document.getElementById('username').value.trim().toLowerCase();
+async function handleLogin() {
+    const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value;
     const selectedRole = document.getElementById('userRole').value;
     
     // Validation
     if (!username || !password || !selectedRole) {
         showNotification('Please fill in all fields', 'error');
-        return;
-    }
-    
-    // Find user
-    let authenticatedUser = null;
-    for (let key in users) {
-        const user = users[key];
-        if (user.username === username && user.password === password) {
-            authenticatedUser = user;
-            break;
-        }
-    }
-    
-    if (!authenticatedUser) {
-        showNotification('Invalid username or password', 'error');
-        shakeForm();
-        return;
-    }
-    
-    // Check if role matches
-    if (authenticatedUser.role !== selectedRole && selectedRole !== 'guest') {
-        showNotification(`Please select "${getRoleName(authenticatedUser.role)}" as your role`, 'error');
         return;
     }
     
@@ -105,25 +87,73 @@ function handleLogin() {
     // Show loading
     showLoading();
     
-    // Store user data in session
-    const sessionData = {
-        username: authenticatedUser.username,
-        fullName: authenticatedUser.fullName,
-        role: authenticatedUser.role,
-        dashboard: authenticatedUser.dashboard,
-        roommateName: authenticatedUser.roommateName || null,
-        loginTime: new Date().toISOString()
-    };
-    
-    sessionStorage.setItem('currentUser', JSON.stringify(sessionData));
-    
-    // Simulate loading and redirect
-    setTimeout(() => {
-        showNotification(`Welcome back, ${authenticatedUser.fullName}!`, 'success');
+    try {
+        // Call backend login API
+        const response = await fetch(`${API_BASE_URL}/auth/login.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include', // Important for cookies/sessions
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        });
+        
+        const data = await response.json();
+        
+        hideLoading();
+        
+        if (!data.success) {
+            showNotification(data.message || 'Login failed', 'error');
+            shakeForm();
+            return;
+        }
+        
+        // Check if role matches
+        if (data.data.user.role !== selectedRole) {
+            showNotification(`Please select "${getRoleName(data.data.user.role)}" as your role`, 'error');
+            return;
+        }
+        
+        // Store minimal user data in sessionStorage for quick access
+        // (Primary auth is server-side via session)
+        const sessionData = {
+            id: data.data.user.id,
+            username: data.data.user.username,
+            fullName: data.data.user.fullName,
+            email: data.data.user.email,
+            role: data.data.user.role,
+            avatar: data.data.user.avatar,
+            loginTime: new Date().toISOString()
+        };
+        
+        sessionStorage.setItem('currentUser', JSON.stringify(sessionData));
+        
+        // Success notification and redirect
+        showNotification(`Welcome back, ${data.data.user.fullName}!`, 'success');
         setTimeout(() => {
-            window.location.href = authenticatedUser.dashboard;
+            window.location.href = getDashboardUrl(data.data.user.role);
         }, 500);
-    }, 1000);
+        
+    } catch (error) {
+        hideLoading();
+        console.error('Login error:', error);
+        showNotification('Login failed. Please check your connection and try again.', 'error');
+        shakeForm();
+    }
+}
+
+// Helper function to get dashboard URL based on role
+function getDashboardUrl(role) {
+    const dashboards = {
+        'admin': 'admin-dashboard.html',
+        'roommate': 'roommate-dashboard.html',
+        'landlord': 'landlord-dashboard.html',
+        'maintenance': 'maintenance-dashboard.html'
+    };
+    return dashboards[role] || 'admin-dashboard.html';
 }
 
 function setupCredentialCards() {
@@ -140,6 +170,7 @@ function setupCredentialCards() {
             if (roleText.includes('admin')) role = 'admin';
             else if (roleText.includes('landlord')) role = 'landlord';
             else if (roleText.includes('maintenance')) role = 'maintenance';
+            else if (roleText.includes('roommate')) role = 'roommate';
             
             // Fill form
             document.getElementById('username').value = username;

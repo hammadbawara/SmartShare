@@ -1,25 +1,43 @@
 // ===== SMART-SHARE HOUSEHOLD MANAGER - MAIN APP.JS =====
 
+// API Configuration
+const API_BASE_URL = window.location.origin + '/backend/api';
+
 // ===== AUTHENTICATION CHECK =====
-function checkAuthentication() {
-    const currentUser = sessionStorage.getItem('currentUser');
+async function checkAuthentication() {
     const currentPage = window.location.pathname.split('/').pop();
     
     // Pages that don't require authentication
-    const publicPages = ['login.html', 'guest-view.html'];
+    const publicPages = ['login.html', 'guest-view.html', 'guest.html'];
     
-    // If not on a public page and not logged in, redirect to login
-    if (!publicPages.includes(currentPage) && !currentUser) {
-        window.location.href = 'login.html';
+    // If on a public page, no auth check needed
+    if (publicPages.includes(currentPage)) {
         return null;
     }
     
-    // If logged in, return user data
-    if (currentUser) {
-        return JSON.parse(currentUser);
+    try {
+        // Check session with backend
+        const response = await fetch(`${API_BASE_URL}/auth/session.php`, {
+            credentials: 'include'
+        });
+        
+        const data = await response.json();
+        
+        if (!data.success || !data.data.authenticated) {
+            // Not authenticated, redirect to login
+            window.location.href = 'login.html';
+            return null;
+        }
+        
+        // Return user data from server
+        return data.data.user;
+        
+    } catch (error) {
+        console.error('Auth check failed:', error);
+        // On error, redirect to login
+        window.location.href = 'login.html';
+        return null;
     }
-    
-    return null;
 }
 
 // ===== GLOBAL STATE =====
@@ -27,16 +45,17 @@ let currentUser = null;
 let darkMode = false;
 
 // ===== INITIALIZATION =====
-document.addEventListener('DOMContentLoaded', function() {
-    initializeApp();
+document.addEventListener('DOMContentLoaded', async function() {
+    await initializeApp();
 });
 
-function initializeApp() {
+async function initializeApp() {
     // Check authentication first
-    currentUser = checkAuthentication();
+    currentUser = await checkAuthentication();
     
     // If no user and not on public page, return (already redirected)
-    if (!currentUser && !['login.html', 'guest-view.html'].includes(window.location.pathname.split('/').pop())) {
+    const currentPage = window.location.pathname.split('/').pop();
+    if (!currentUser && !['login.html', 'guest-view.html', 'guest.html'].includes(currentPage)) {
         return;
     }
     
@@ -352,10 +371,29 @@ function daysUntil(date) {
 }
 
 // ===== LOGOUT FUNCTION (Global) =====
-function handleLogout() {
+async function handleLogout() {
     if (confirm('Are you sure you want to logout?')) {
-        sessionStorage.removeItem('currentUser');
-        window.location.href = 'login.html';
+        try {
+            // Call backend logout API
+            const response = await fetch(`${API_BASE_URL}/auth/logout.php`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+            
+            const data = await response.json();
+            
+            // Clear sessionStorage regardless of API response
+            sessionStorage.removeItem('currentUser');
+            
+            // Redirect to login
+            window.location.href = 'login.html';
+            
+        } catch (error) {
+            console.error('Logout error:', error);
+            // Clear session and redirect anyway
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
     }
 }
 
