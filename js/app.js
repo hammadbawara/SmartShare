@@ -426,6 +426,10 @@ async function handleLogout() {
 // Make logout function globally accessible
 window.handleLogout = handleLogout;
 
+// Make modal functions globally accessible for inline onclick handlers
+window.openModal = openModal;
+window.closeModal = closeModal;
+
 // ===== EXPORT FOR OTHER SCRIPTS =====
 window.smartShare = {
     openModal,

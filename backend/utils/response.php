@@ -83,14 +83,27 @@ function sendServerError($message = 'Internal server error') {
  * Set CORS headers
  */
 function setCorsHeaders() {
-    $origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
+    $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
     
-    // Allow from same origin or localhost during development
-    if (APP_DEBUG || strpos($origin, APP_URL) === 0) {
-        header("Access-Control-Allow-Origin: $origin");
+    // In development, allow requests from localhost
+    if (APP_DEBUG) {
+        // If there's an origin header, use it; otherwise use localhost:8000
+        if ($origin) {
+            header("Access-Control-Allow-Origin: $origin");
+        } else {
+            header("Access-Control-Allow-Origin: http://localhost:8000");
+        }
         header("Access-Control-Allow-Credentials: true");
         header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-        header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+        header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-CSRF-Token");
+    } else {
+        // In production, only allow from specific domains
+        if (strpos($origin, APP_URL) === 0) {
+            header("Access-Control-Allow-Origin: $origin");
+            header("Access-Control-Allow-Credentials: true");
+            header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+            header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-CSRF-Token");
+        }
     }
     
     // Handle preflight requests

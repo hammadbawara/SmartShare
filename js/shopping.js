@@ -1,8 +1,12 @@
 // ===== SHOPPING LIST PAGE JAVASCRIPT =====
 
 let itemsData = [];
+let currentUser = null;
 
 document.addEventListener('DOMContentLoaded', async function() {
+    // Get current user from app.js or session
+    currentUser = smartShare?.currentUser() || JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+    
     setupQuickAddForm();
     setupAddItemForm();
     await loadShoppingItems();

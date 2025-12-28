@@ -312,28 +312,31 @@
             <form class="modal-body" id="addBillForm">
                 <div class="form-group">
                     <label for="billName">Bill Name *</label>
-                    <input type="text" id="billName" required placeholder="e.g., Cable TV, Netflix">
+                    <input type="text" id="billName" required placeholder="e.g., Electric Bill, Internet">
                 </div>
                 <div class="form-group">
                     <label for="billAmount">Total Amount *</label>
                     <input type="number" id="billAmount" step="0.01" required placeholder="0.00">
                 </div>
                 <div class="form-group">
+                    <label for="billCategory">Category *</label>
+                    <select id="billCategory" required>
+                        <option value="rent">Rent</option>
+                        <option value="electricity">Electricity</option>
+                        <option value="internet">Internet</option>
+                        <option value="gas">Gas Bill</option>
+                        <option value="water">Water</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="billDueDate">Due Date *</label>
                     <input type="date" id="billDueDate" required>
                 </div>
                 <div class="form-group">
-                    <label for="billSplit">Split Method *</label>
-                    <select id="billSplit" required>
-                        <option value="equal">Split Equally (4 people)</option>
-                        <option value="custom">Custom Split</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="billRecurring">
-                        Recurring bill (monthly)
-                    </label>
+                    <label for="billDescription">Description</label>
+                    <textarea id="billDescription" rows="3" placeholder="Additional notes (optional)"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" onclick="closeModal('addBillModal')">Cancel</button>
@@ -344,6 +347,7 @@
     </div>
 
     <script src="../js/app.js"></script>
+    <script src="../js/api-client.js"></script>
     <script src="../js/finances.js"></script>
     <script>
         // Authentication check

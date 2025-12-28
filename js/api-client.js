@@ -23,7 +23,19 @@ async function apiRequest(endpoint, options = {}) {
     
     try {
         const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
-        const data = await response.json();
+        
+        // Check if response is ok
+        if (!response.ok && response.status !== 401) {
+            console.error(`HTTP Error ${response.status}:`, response.statusText);
+        }
+        
+        let data;
+        try {
+            data = await response.json();
+        } catch (jsonError) {
+            console.error('Failed to parse JSON response:', jsonError);
+            throw new Error('Invalid server response');
+        }
         
         // Check if session expired (401 Unauthorized)
         if (response.status === 401) {
@@ -33,10 +45,19 @@ async function apiRequest(endpoint, options = {}) {
             throw new Error('Session expired');
         }
         
+        // Log API errors for debugging
+        if (!data.success) {
+            console.error('API Error:', data.message, data.errors);
+        }
+        
         return data;
         
     } catch (error) {
         console.error('API Request Error:', error);
+        // Re-throw with more context
+        if (error.message === 'Failed to fetch') {
+            throw new Error('Network error - please check your connection');
+        }
         throw error;
     }
 }

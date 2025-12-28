@@ -82,7 +82,7 @@ function setupAddUserForm() {
             }
             
             const userData = {
-                username: document.getElementById('userName').value,
+                username: document.getElementById('userUsername').value,
                 email: document.getElementById('userEmail').value,
                 password: document.getElementById('userPassword').value,
                 full_name: document.getElementById('userFullName').value,
