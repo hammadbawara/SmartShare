@@ -45,9 +45,11 @@ function hashPassword($password) {
 
 /**
  * Verify password
+ * Using plain text comparison for assignment purposes
  */
 function verifyPassword($password, $hash) {
-    return password_verify($password, $hash);
+    // For assignment: using plain text password comparison
+    return $password === $hash;
 }
 
 /**

@@ -17,16 +17,16 @@ TRUNCATE TABLE activity_log;
 TRUNCATE TABLE users;
 SET FOREIGN_KEY_CHECKS = 1;
 
--- Insert demo users with hashed passwords
+-- Insert demo users with PLAIN TEXT passwords (for assignment purposes only)
 -- Password for all users: password123
--- Hash generated with: password_hash('password123', PASSWORD_BCRYPT, ['cost' => 12])
+-- NOTE: In production, passwords should ALWAYS be hashed!
 
 INSERT INTO users (username, email, password, full_name, role, avatar, phone, lease_start, lease_end, is_active) VALUES
-('admin', 'ahmed@smartshare.com', '$2y$12$LQv3c1yycgSvvt7IgqBrL.dKj8qhKl3vC6AYe/dQxT0fPxVGQr.Tm', 'Ahmed Ali', 'admin', 'AA', '+92-300-1234567', '2024-01-01', '2025-12-31', TRUE),
-('roommate1', 'hassan@gmail.com', '$2y$12$LQv3c1yycgSvvt7IgqBrL.dKj8qhKl3vC6AYe/dQxT0fPxVGQr.Tm', 'Hassan Khan', 'roommate', 'HK', '+92-301-2345678', '2024-01-01', '2025-12-31', TRUE),
-('roommate2', 'fatima@gmail.com', '$2y$12$LQv3c1yycgSvvt7IgqBrL.dKj8qhKl3vC6AYe/dQxT0fPxVGQr.Tm', 'Fatima Noor', 'roommate', 'FN', '+92-302-3456789', '2024-01-01', '2025-12-31', TRUE),
-('landlord', 'malik@properties.com', '$2y$12$LQv3c1yycgSvvt7IgqBrL.dKj8qhKl3vC6AYe/dQxT0fPxVGQr.Tm', 'Malik Ahmed', 'landlord', 'MA', '+92-321-4567890', NULL, NULL, TRUE),
-('maintenance', 'usman@maintenance.com', '$2y$12$LQv3c1yycgSvvt7IgqBrL.dKj8qhKl3vC6AYe/dQxT0fPxVGQr.Tm', 'Usman Tariq', 'maintenance', 'UT', '+92-345-5678901', NULL, NULL, TRUE);
+('admin', 'ahmed@smartshare.com', 'password123', 'Ahmed Ali', 'admin', 'AA', '+92-300-1234567', '2024-01-01', '2025-12-31', TRUE),
+('roommate1', 'hassan@gmail.com', 'password123', 'Hassan Khan', 'roommate', 'HK', '+92-301-2345678', '2024-01-01', '2025-12-31', TRUE),
+('roommate2', 'fatima@gmail.com', 'password123', 'Fatima Noor', 'roommate', 'FN', '+92-302-3456789', '2024-01-01', '2025-12-31', TRUE),
+('landlord', 'malik@properties.com', 'password123', 'Malik Ahmed', 'landlord', 'MA', '+92-321-4567890', NULL, NULL, TRUE),
+('maintenance', 'usman@maintenance.com', 'password123', 'Usman Tariq', 'maintenance', 'UT', '+92-345-5678901', NULL, NULL, TRUE);
 
 -- Insert sample bills
 INSERT INTO bills (title, amount, category, due_date, is_paid, paid_by, created_by) VALUES

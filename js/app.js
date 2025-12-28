@@ -44,6 +44,32 @@ async function checkAuthentication() {
 let currentUser = null;
 let darkMode = false;
 
+// ===== IMMEDIATE AUTH CHECK (before page loads) =====
+(async function() {
+    const currentPage = window.location.pathname.split('/').pop();
+    const publicPages = ['login.html', 'guest-view.html', 'guest.html'];
+    
+    // Only check auth if not on public page
+    if (!publicPages.includes(currentPage)) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/session.php`, {
+                credentials: 'include'
+            });
+            const data = await response.json();
+            
+            if (!data.success || !data.data.authenticated) {
+                // Not authenticated - redirect immediately
+                window.location.replace('login.html');
+                return;
+            }
+        } catch (error) {
+            // On error, redirect to login
+            window.location.replace('login.html');
+            return;
+        }
+    }
+})();
+
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', async function() {
     await initializeApp();
