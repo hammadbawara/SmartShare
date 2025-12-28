@@ -1,0 +1,298 @@
+:root{
+  --bg: #ffffff; /* 60% primary white */
+  --text: #111111; /* 30% secondary black text */
+  --accent: #bf0000; /* 10% CTA accent (red) */
+  --muted: #6c757d;
+  --card-radius: 12px;
+}
+
+*{box-sizing:border-box}
+
+@keyframes fadeInUp {
+  from {opacity: 0; transform: translateY(10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+@keyframes slideInLeft {
+  from {opacity: 0; transform: translateX(-10px);}
+  to {opacity: 1; transform: translateX(0);}
+}
+
+@keyframes pulse {
+  0%, 100% {opacity: 1;}
+  50% {opacity: 0.7;}
+}
+
+body.bg-app{
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+}
+
+/* Navigation */
+.navbar-brand{
+  font-weight:700;
+  font-size:1.3rem;
+  transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.05);
+}
+
+/* Cards */
+.card{
+  border-radius:var(--card-radius);
+  border: 1px solid rgba(0,0,0,0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.4s ease;
+}
+
+.card:hover {
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12) !important;
+  transform: translateY(-4px);
+}
+
+.card .card-body{
+  padding:1.5rem;
+}
+
+/* Buttons */
+.btn-cta{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#fff;
+  transition: all 0.3s ease;
+  font-weight: 700;
+  padding: .55rem 1.1rem;
+  font-size: 1rem;
+  border-radius: 10px;
+}
+
+.btn-cta:hover{
+  background: #ff5a1a;
+  border-color: #ff5a1a;
+  transform: scale(1.02);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
+}
+
+.btn-cta:active {
+  transform: scale(0.98);
+}
+
+.btn-outline-primary, .btn-outline-secondary, .btn-outline-danger, .btn-outline-warning {
+  transition: all 0.2s ease;
+}
+
+.btn-outline-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
+}
+
+.btn-outline-secondary:hover {
+  transform: translateY(-2px);
+}
+
+.btn-outline-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.15);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  animation: slideInLeft 0.5s ease;
+}
+
+.text-muted{
+  color:var(--muted)!important;
+}
+
+/* Tables */
+.table-hover tbody tr {
+  transition: all 0.2s ease;
+}
+
+.table-hover tbody tr:hover{
+  background:rgba(0,0,0,0.03);
+  transform: scale(1.01);
+}
+
+/* Badges */
+.badge {
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.badge:hover {
+  transform: scale(1.1);
+  filter: brightness(0.95);
+}
+
+/* Badges specific colors */
+.bg-success {
+  background-color: #198754 !important;
+}
+
+.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+.bg-warning {
+  background-color: #ffc107 !important;
+  color: #111 !important;
+}
+
+.bg-info {
+  background-color: #0dcaf0 !important;
+  color: #111 !important;
+}
+
+.bg-primary {
+  background-color: #0d6efd !important;
+}
+
+.bg-secondary {
+  background-color: #6c757d !important;
+}
+
+/* Header */
+header.bg-white{
+  background:#fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  animation: slideInLeft 0.6s ease;
+}
+
+/* Modals */
+.modal-content {
+  border-radius: var(--card-radius);
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.modal-header {
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  background: rgba(255,255,255,0.99);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.form-control, .form-select {
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+}
+
+/* Dropdown */
+.dropdown-menu {
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.dropdown-item {
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 107, 53, 0.1);
+  color: var(--accent);
+}
+
+/* Animations on load */
+.table {
+  animation: fadeInUp 0.6s ease;
+}
+
+.table tbody tr {
+  animation: fadeInUp 0.5s ease;
+  animation-fill-mode: both;
+}
+
+.table tbody tr:nth-child(1) { animation-delay: 0.05s; }
+.table tbody tr:nth-child(2) { animation-delay: 0.1s; }
+.table tbody tr:nth-child(3) { animation-delay: 0.15s; }
+.table tbody tr:nth-child(n+4) { animation-delay: 0.2s; }
+
+/* Alert animations */
+.alert {
+  animation: fadeInUp 0.4s ease;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 1rem;
+  }
+  
+  .btn-group {
+    width: 100%;
+  }
+  
+  .navbar .text-end {
+    display: none;
+  }
+  
+  header.bg-white .d-flex {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 576px){
+  .card-body h3{
+    font-size:1.4rem;
+  }
+  
+  .btn-cta, .btn-outline-primary {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .table {
+    font-size: 0.85rem;
+  }
+  
+  header.bg-white .container {
+    flex-direction: column;
+  }
+}
+
+/* Charts */
+.card canvas {
+  width: 100% !important;
+  display: block;
+  min-height: 80px;
+}
+
+/* Ensure chart canvases have explicit visible heights */
+.chart-canvas{ height:260px !important; display:block; width:100% !important; margin:0; padding:0; }
+.chart-wrap{ height:280px; min-height:280px; display:flex; align-items:stretch; flex:1; margin-bottom:1rem; }
+
+.chart-legend { display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap; }
+.chart-legend .item { display:flex; gap:0.5rem; align-items:center; font-weight:600; }
+.chart-legend .swatch { width:14px; height:14px; border-radius:3px; }
+
+/* subtle breathing effect for key cards */
+.card.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* small gradient accent bar for chart cards */
+.card .card-body:before {
+  content: '';
+  display:block;
+  height:6px;
+  width:60px;
+  border-radius:3px;
+  margin-bottom:12px;
+  background: linear-gradient(90deg, rgba(191,0,0,1), rgba(255,154,0,1));
+}
+

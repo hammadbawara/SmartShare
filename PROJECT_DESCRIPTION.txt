@@ -1,0 +1,837 @@
+Smart-Share — Project Description
+
+Overview:
+Smart-Share is a frontend-first household management system (UI implemented) designed to help roommates, landlords, maintenance staff, and house administrators manage shared responsibilities, finances, maintenance, shopping, and announcements. The project is implemented with static HTML/CSS/Vanilla JS for the UI, and a PHP backend API scaffold (under `backend/`) intended for future/full integration. The UI currently stores minimal session state in `sessionStorage` and uses server-side session APIs when available. The project is designed to be integrated with a simple REST-like backend under `backend/api`.
+
+Primary Goals:
+- Provide role-based dashboards and workflows for household management.
+- Track and split finances and bills.
+- Schedule and rotate chores.
+- Create and manage maintenance tickets with priorities and assignments.
+- Maintain a shared shopping list with assignment and completion status.
+- Allow announcements with reactions and pinning.
+- Provide a guest view for public information such as WiFi details.
+
+Workspace Structure (high-level):
+- Root files: `index.html`, `index.php`,
+- `css/` — page-specific and global styles like `styles.css`, `finances.css`, `login.css`.
+- `js/` — frontend logic: `app.js`, `login.js`, `finances.js`, `chores.js`, `maintenance.js`, `shopping.js`, `users.js`, `announcements.js`, `guest.js`, `api-client.js`, `navigation.js`.
+- `pages/` — per-role pages and public pages (e.g., `login.html`, `admin-dashboard.html`, `roommate-dashboard.html`, `maintenance-dashboard.html`, `finances.html`, `chores.html`, `shopping.html`, `announcements.html`, `guest-view.html`, etc.).
+- `backend/` — PHP API and handlers. Key folders: `backend/api/` (REST endpoints), `backend/config/`, `backend/middleware/`, `backend/utils/`, `backend/migrations/`, `backend/seeds/`.
+
+Core Frontend Files & Responsibilities:
+- `js/app.js`: Global app initialization, theme handling, auth/session verification with server, UI helpers (modals, notifications, logout). Contains an immediate server session check to populate `sessionStorage.currentUser` and avoid redirect flicker.
+- `js/login.js`: Login UI, calls `/backend/api/auth/login.php`, saves minimal `sessionStorage.currentUser`, redirects to role dashboard.
+- `js/finances.js`, `js/chores.js`, `js/maintenance.js`, `js/shopping.js`, `js/users.js`, `js/announcements.js`: Page-specific logic for forms, filtering, CRUD-like actions and UI updates.
+- `js/api-client.js`: Helper to call backend API endpoints (used by pages that interact with backend).
+
+Backend Overview (intended endpoints):
+- Authentication
+  - `POST /backend/api/auth/login.php` — authenticate, set server session/cookie
+  - `POST /backend/api/auth/logout.php` — destroy session
+  - `GET /backend/api/auth/session.php` — return current session status and user info
+- Finances
+  - `GET /backend/api/finances/summary.php`
+  - `GET/POST/PUT /backend/api/finances/bills.php`
+- Chores
+  - `GET /backend/api/chores/chores.php`
+  - `POST /backend/api/chores/rotate.php`
+- Maintenance
+  - `GET/POST/PUT /backend/api/maintenance/tickets.php`
+- Shopping
+  - `GET/POST/PUT/DELETE /backend/api/shopping/items.php`
+- Users
+  - `GET/POST/PUT/DELETE /backend/api/users/users.php`
+- Announcements
+  - `GET/POST /backend/api/announcements/announcements.php`
+  - `POST /backend/api/announcements/reactions.php`
+
+Data & Session Handling:
+- Frontend: Minimal `sessionStorage.currentUser` is used for quick UI rendering (full auth is intended to be server-driven). `localStorage.darkMode` keeps theme preference.
+- Backend: Server session cookie + `session.php` endpoint returns JSON `{ success: true, data: { authenticated: true, user: { ... } } }` when authenticated. The frontend relies on this endpoint to avoid redirect loops.
+- Database: SQL files available under `backend/database_setup.sql` and `backend/migrations/001_create_tables.sql` for initial schema and seed data in `backend/seeds/default_users.sql`.
+
+Roles, Descriptions, and Controls (detailed):
+1) House Admin (role key: `admin`)
+   - Overview: Full access to all features; manages users and finances; sees all dashboards.
+   - Frontend Controls / Pages:
+     - Access to `admin-dashboard.html`, `finances.html`, `chores.html`, `maintenance.html`, `shopping.html`, `users.html`, `announcements.html`.
+     - Can add/edit/remove users on `users.html` (via `js/users.js` frontend handlers and backend `users_handler.php`).
+     - Can create, edit, and mark bills as paid/unpaid; split costs and assign shares.
+     - Can rotate chore assignments or create chores.
+     - Can view and update maintenance tickets, change priority, assign to staff.
+     - Post and pin announcements; moderate reactions.
+   - Backend/API Controls:
+     - Full CRUD on `/api/users/`, `/api/bills/`, `/api/maintenance/tickets.php`, `/api/announcements/`.
+   - UI Elements & Permissions:
+     - Show `users.html` navigation item.
+     - Show admin-only action buttons (Add User, Post Announcement, Create Bill, Assign Ticket).
+
+2) Roommate (role key: `roommate`)
+   - Overview: Standard household member; interact with finances, chores, shopping, and announcements.
+   - Frontend Controls / Pages:
+     - Access to `roommate-dashboard.html`, `finances.html`, `chores.html`, `shopping.html`, `announcements.html`, `maintenance.html` (create/view tickets).
+     - Can view their share of bills and mark bills as paid (may be limited to flag paid in UI).
+     - Can mark chores complete, view chore schedule, and accept assigned chores.
+     - Can add and claim shopping items; mark items purchased.
+     - View and react to announcements.
+   - Backend/API Controls:
+     - Read access to bills and chores endpoints; create maintenance ticket; vote/react on announcements; create shopping list items and update status.
+   - UI Elements & Permissions:
+     - No access to `users.html` or admin-only controls. Navigation items limited to allowed pages via `data-role` attributes.
+
+3) Landlord (role key: `landlord`)
+   - Overview: External owner-level viewer; primarily views maintenance and announcements.
+   - Frontend Controls / Pages:
+     - Access to `landlord-dashboard.html`, `maintenance.html`, `announcements.html`.
+     - Can view maintenance ticket statuses and announcements.
+   - Backend/API Controls:
+     - Read-only access to maintenance and announcements; may be allowed to comment on tickets.
+   - UI Elements & Permissions:
+     - Limited navigation: hide finances/chores/shopping.
+
+4) Maintenance Staff (role key: `maintenance`)
+   - Overview: Focused on maintenance tickets and work orders.
+   - Frontend Controls / Pages:
+     - Access to `maintenance-dashboard.html`, `maintenance.html`, `announcements.html`.
+     - Can view assigned tickets, update status (received → in-progress → completed), and add notes.
+     - Can request supplies (UI placeholder) and update ticket priority.
+   - Backend/API Controls:
+     - Read and update access to maintenance tickets endpoint.
+   - UI Elements & Permissions:
+     - Only maintenance-related navigation items; quick actions to update ticket status.
+
+5) Guest (role key: `guest` - public)
+   - Overview: Limited public view (no auth) designed for visiting guests to see non-sensitive info like WiFi and house rules.
+   - Frontend Controls / Pages:
+     - Access to `guest.html` and `guest-view.html` — no login required.
+     - Can copy WiFi password via `js/guest.js` copy functions.
+   - Backend/API Controls:
+     - Typically none; page is static or reads only public info.
+
+Demo Credentials (from frontend demo):
+- House Admin: username `admin` / password `password123`
+- Roommate: username `roommate1` / password `password123`
+- Landlord: username `landlord` / password `password123`
+- Maintenance: username `maintenance` / password `password123`
+
+Key UI Patterns & Notes to Avoid Redirect Flicker:
+- The frontend uses `sessionStorage.currentUser` for quick rendering but relies on a server session check (`/backend/api/auth/session.php`) to confirm authentication. To avoid flicker between `login.html` and dashboards ensure `session.php` returns JSON quickly and `js/app.js` populates `sessionStorage` on successful responses.
+- Many pages contain small inline scripts that previously read `sessionStorage` immediately on load and redirected to `login.html`. The recommended approach (and used in a recent patch) is to perform an async server session check, populate `sessionStorage`, then run role-based UI logic.
+
+Testing & Running Locally (quick checklist):
+1. Start XAMPP Apache + MySQL. Place project in `htdocs/SmartShare`.
+2. Import database schema: `backend/database_setup.sql` (or `backend/migrations/001_create_tables.sql`) into a `smartshare` database.
+3. Configure DB credentials in `backend/config/config.php` and `backend/config/database.php`.
+4. Open browser to `http://localhost:8080/SmartShare/pages/login.html` and use demo credentials.
+5. Inspect DevTools→Network for calls to `/backend/api/auth/session.php` and `/backend/api/auth/login.php` and confirm they return `success: true` and `data.data.authenticated: true`.
+6. Clear `sessionStorage` or cookies when troubleshooting redirect issues.
+
+Integration & Backend Notes:
+- Backend endpoints return JSON and are placed under `backend/api`. Handlers exist at `backend/announcements_handler.php`, `backend/login_handler.php`, etc., and API route wrappers are under `backend/api/*`.
+- Middleware like `backend/middleware/auth.php` is present to gate access.
+- Utilities for response, validation and security are under `backend/utils/`.
+
+Suggested Next Steps for Production-Readiness:
+- Harden authentication (password hashing, token expiry, HTTPS enforcement).
+- Replace demo `sessionStorage` reliance with robust server-side session + `GET /auth/me` to return user claims.
+- Persist all UI changes through backend endpoints and centralize business logic server-side.
+- Add server-side authorization checks for every sensitive route.
+- Add automated tests for critical flows (login, bill creation, chore rotation, maintenance lifecycle).
+
+Contact & Handoff:
+This file is generated from the project contents in the workspace. Use it as a single-source brief to feed into other AI tools or to onboard contributors.
+
+---
+Generated: PROJECT_DESCRIPTION.txt
+Location: c:/xampp/htdocs/SmartShare/PROJECT_DESCRIPTION.txt
+here is teh current database data
+
+←
+
+
+
+           
+
+•    
+
+•  
+
+New
+
+•  
+
+ 
+
+information_schema
+
+•  
+
+ 
+
+mysql
+
+•  
+
+ 
+
+performance_schema
+
+•  
+
+ 
+
+phpmyadmin
+
+•  
+
+ 
+
+smartshare_db
+
+o  
+
+New
+
+o  
+
+ 
+
+announcements
+
+  
+
+ 
+
+ Columns
+
+  
+
+New
+
+  
+
+content (text)
+
+  
+
+created_at (timestamp, curren...)
+
+  
+
+id (PRI, int)
+
+  
+
+is_important (tinyint, nullable)
+
+  
+
+posted_by (MUL, int)
+
+  
+
+title (varchar)
+
+  
+
+ 
+
+ Indexes
+
+  
+
+New
+
+  
+
+posted_by
+
+  
+
+PRIMARY
+
+o  
+
+ 
+
+bills
+
+  
+
+ 
+
+ Columns
+
+  
+
+New
+
+  
+
+amount (decimal)
+
+  
+
+category (varchar)
+
+  
+
+created_at (timestamp, curren...)
+
+  
+
+created_by (MUL, int)
+
+  
+
+due_date (date)
+
+  
+
+id (PRI, int)
+
+  
+
+status (enum, 'unpai..., nullable)
+
+  
+
+title (varchar)
+
+  
+
+ 
+
+ Indexes
+
+  
+
+New
+
+  
+
+created_by
+
+  
+
+PRIMARY
+
+o  
+
+ 
+
+chores
+
+  
+
+ 
+
+ Columns
+
+  
+
+New
+
+  
+
+assigned_to (MUL, int)
+
+  
+
+created_at (timestamp, curren...)
+
+  
+
+description (text, NULL, nullable)
+
+  
+
+due_date (date)
+
+  
+
+id (PRI, int)
+
+  
+
+status (enum, 'pendi..., nullable)
+
+  
+
+title (varchar)
+
+  
+
+ 
+
+ Indexes
+
+  
+
+New
+
+  
+
+assigned_to
+
+  
+
+PRIMARY
+
+o  
+
+ 
+
+maintenance_tickets
+
+  
+
+ 
+
+ Columns
+
+  
+
+New
+
+  
+
+assigned_to (MUL, int, NULL, nullable)
+
+  
+
+created_at (timestamp, curren...)
+
+  
+
+description (text)
+
+  
+
+id (PRI, int)
+
+  
+
+priority (enum, 'mediu..., nullable)
+
+  
+
+reported_by (MUL, int)
+
+  
+
+status (enum, 'open', nullable)
+
+  
+
+title (varchar)
+
+  
+
+ 
+
+ Indexes
+
+  
+
+New
+
+  
+
+assigned_to
+
+  
+
+PRIMARY
+
+  
+
+reported_by
+
+o  
+
+ 
+
+shopping_items
+
+  
+
+ 
+
+ Columns
+
+  
+
+New
+
+  
+
+added_by (MUL, int)
+
+  
+
+category (varchar)
+
+  
+
+claimed_by (MUL, int, NULL, nullable)
+
+  
+
+created_at (timestamp, curren...)
+
+  
+
+id (PRI, int)
+
+  
+
+is_purchased (tinyint, nullable)
+
+  
+
+item_name (varchar)
+
+  
+
+quantity (int, 1, nullable)
+
+  
+
+ 
+
+ Indexes
+
+  
+
+New
+
+  
+
+added_by
+
+  
+
+claimed_by
+
+  
+
+PRIMARY
+
+o  
+
+ 
+
+users
+
+  
+
+ 
+
+ Columns
+
+  
+
+New
+
+  
+
+created_at (timestamp, curren...)
+
+  
+
+email (UNI, varchar)
+
+  
+
+fullname (varchar)
+
+  
+
+id (PRI, int)
+
+  
+
+is_active (tinyint, 1, nullable)
+
+  
+
+role (enum)
+
+  
+
+username (UNI, varchar)
+
+  
+
+ 
+
+ Indexes
+
+  
+
+New
+
+  
+
+email
+
+  
+
+PRIMARY
+
+  
+
+username
+
+•  
+
+ 
+
+test
+
+•  
+
+ 
+
+university
+
+1.   Server: 127.0.0.1
+
+•   Databases
+
+•   SQL
+
+•   Status
+
+•   User accounts
+
+•   Export
+
+•   Import
+
+•   Settings
+
+•   Replication
+
+•   Variables
+
+•   Charsets
+
+•   Engines
+
+•   Plug-ins
+
+ 
+
+  Console
+
+ascending
+
+descending
+
+Order:
+
+Debug SQL
+
+Execution order
+
+Time taken
+
+Order by:
+
+Group queries
+
+Some error occurred while getting SQL debug info.
+
+Bookmarks
+
+Refresh
+
+Add
+
+No bookmarks
+
+Add bookmark
+
+Label:  Target database:  Share this bookmark 
+
+
+
+Options
+
+Set default
+
+Always expand query messages
+
+Show query history at start
+
+Show current browsing query
+
+ Execute queries on Enter and insert new line with Shift+Enter. To make this permanent, view settings.
+
+Switch to dark theme
+
+General settings
+
+• 
+
+Database server
+
+• Server: 127.0.0.1 via TCP/IP
+
+• Server type: MariaDB
+
+• Server connection: SSL is not being used  
+
+• Server version: 10.4.32-MariaDB - mariadb.org binary distribution
+
+• Protocol version: 10
+
+• User: root@localhost
+
+• Server charset: UTF-8 Unicode (utf8mb4)
+
+Web server
+
+• Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12
+
+• Database client version: libmysql - mysqlnd 8.2.12
+
+• PHP extension: mysqli   curl   mbstring  
+
+• PHP version: 8.2.12
+
+phpMyAdmin
+
+• Version information: 5.2.1
+
+• Documentation
+
+• Official Homepage
+
+• Contribute
+
+• Get support
+
+• List of changes
+
+• Licence
+
+ 
+
+email (UNI, varchar)
+
+here is the db structure 
+-- Smart-Share Simple Database Schema
+
+CREATE DATABASE IF NOT EXISTS smartshare_db;
+USE smartshare_db;
+
+-- Users Table
+CREATE TABLE IF NOT EXISTS users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    fullname VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    role ENUM('admin', 'roommate', 'landlord', 'maintenance') NOT NULL,
+    is_active BOOLEAN DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Bills Table
+CREATE TABLE IF NOT EXISTS bills (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(100) NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    due_date DATE NOT NULL,
+    created_by INT NOT NULL,
+    status ENUM('unpaid', 'paid') DEFAULT 'unpaid',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Chores Table
+CREATE TABLE IF NOT EXISTS chores (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(100) NOT NULL,
+    description TEXT,
+    assigned_to INT NOT NULL,
+    due_date DATE NOT NULL,
+    status ENUM('pending', 'completed') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (assigned_to) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Maintenance Tickets Table
+CREATE TABLE IF NOT EXISTS maintenance_tickets (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+    priority ENUM('low', 'medium', 'high') DEFAULT 'medium',
+    status ENUM('open', 'in-progress', 'completed') DEFAULT 'open',
+    reported_by INT NOT NULL,
+    assigned_to INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (reported_by) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (assigned_to) REFERENCES users(id) ON DELETE SET NULL
+);
+
+-- Shopping List Table
+CREATE TABLE IF NOT EXISTS shopping_items (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    item_name VARCHAR(100) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    quantity INT DEFAULT 1,
+    is_purchased BOOLEAN DEFAULT 0,
+    added_by INT NOT NULL,
+    claimed_by INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (added_by) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (claimed_by) REFERENCES users(id) ON DELETE SET NULL
+);
+
+-- Announcements Table
+CREATE TABLE IF NOT EXISTS announcements (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(150) NOT NULL,
+    content TEXT NOT NULL,
+    posted_by INT NOT NULL,
+    is_important BOOLEAN DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (posted_by) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Insert Demo Users
+INSERT INTO users (id, username, fullname, email, role) VALUES
+(1, 'admin', 'Ahmed Ali', 'admin@smartshare.com', 'admin'),
+(2, 'roommate1', 'Hassan Khan', 'roommate1@smartshare.com', 'roommate'),
+(3, 'roommate2', 'Fatima Noor', 'roommate2@smartshare.com', 'roommate'),
+(4, 'landlord', 'Malik Ahmed', 'landlord@smartshare.com', 'landlord'),
+(5, 'maintenance', 'Usman Tariq', 'maintenance@smartshare.com', 'maintenance');
+
+-- Sample Data
+INSERT INTO bills (title, amount, category, due_date, created_by, status) VALUES
+('Electricity Bill', 5000, 'Utilities', '2025-01-15', 1, 'unpaid'),
+('Internet Bill', 3000, 'Internet', '2025-01-10', 1, 'paid'),
+('Water Bill', 2000, 'Utilities', '2025-01-05', 1, 'unpaid');
+
+INSERT INTO chores (title, description, assigned_to, due_date, status) VALUES
+('Clean Kitchen', 'Wash dishes and clean counters', 2, '2025-12-30', 'pending'),
+('Sweep Living Room', 'Vacuum and mop the living room', 3, '2025-12-31', 'completed'),
+('Bathroom Cleaning', 'Clean toilet and sink', 2, '2025-12-29', 'pending');
+
+INSERT INTO maintenance_tickets (title, description, priority, status, reported_by, assigned_to) VALUES
+('Broken Ceiling Fan', 'Ceiling fan in bedroom is not working', 'medium', 'open', 2, 5),
+('Leaky Tap', 'Kitchen tap is leaking water', 'high', 'in-progress', 3, 5);
+
+INSERT INTO shopping_items (item_name, category, quantity, added_by) VALUES
+('Milk', 'Dairy', 1, 1),
+('Bread', 'Bakery', 2, 2),
+('Vegetables', 'Produce', 1, 3);
+
+INSERT INTO announcements (title, content, posted_by, is_important) VALUES
+('Weekly Meeting', 'House meeting on Saturday at 6 PM', 1, 1),
+('Guest Policy', 'Please inform before bringing guests', 1, 0);
